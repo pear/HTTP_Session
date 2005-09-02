@@ -44,6 +44,9 @@ ini_set('display_errors', 1);
 //PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
 //HTTP_Session::setContainer('DB', array('dsn' => 'mysql://root@localhost/database', 'table' => 'sessiondata'));
+//HTTP_Session::useTransSID(false);    // set value for session.use_trans_sid
+//HTTP_Session::setGcMaxLifetime(120); // set value for session.gc_maxlifetime
+//HTTP_Session::setGcProbability(10);  // set value for session.gc_probability
 HTTP_Session::useCookies(true);
 HTTP_Session::start('SessionID', uniqid('MyID'));
 
@@ -91,7 +94,7 @@ switch (@$_GET['action']) {
         break;
 }
 
-HTTP_Session::setExpire(60);
+HTTP_Session::setExpire(60); // if value is bigger than current value of session.gc_maxlifetime, session.gc_maxlifetime will be set/increased to value
 HTTP_Session::setIdle(5);
 
 //echo("session_is_registered('variable'): <b>'" . (session_is_registered('variable') ? "<span style='color: red;'>yes</span>" : "no") . "'</b><br>\n");
