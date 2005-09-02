@@ -1,38 +1,45 @@
 <?php
-//
-// +-----------------------------------------------------------------------+
-// | Copyright (c) 2002, Alexander Radivanovich                            |
-// | All rights reserved.                                                  |
-// |                                                                       |
-// | Redistribution and use in source and binary forms, with or without    |
-// | modification, are permitted provided that the following conditions    |
-// | are met:                                                              |
-// |                                                                       |
-// | o Redistributions of source code must retain the above copyright      |
-// |   notice, this list of conditions and the following disclaimer.       |
-// | o Redistributions in binary form must reproduce the above copyright   |
-// |   notice, this list of conditions and the following disclaimer in the |
-// |   documentation and/or other materials provided with the distribution.|
-// | o The names of the authors may not be used to endorse or promote      |
-// |   products derived from this software without specific prior written  |
-// |   permission.                                                         |
-// |                                                                       |
-// | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS   |
-// | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT     |
-// | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR |
-// | A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT  |
-// | OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, |
-// | SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT      |
-// | LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, |
-// | DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY |
-// | THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT   |
-// | (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE |
-// | OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  |
-// |                                                                       |
-// +-----------------------------------------------------------------------+
-// | Author: Alexander Radivanovich <info@wwwlab.net>                      |
-// +-----------------------------------------------------------------------+
-//
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+ * Class for managing HTTP sessions
+ *
+ * Provides access to session-state values as well as session-level
+ * settings and lifetime management methods.
+ * Based on the standart PHP session handling mechanism
+ * it provides for you more advanced features such as
+ * database container, idle and expire timeouts, etc.
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA  02111-1307  USA
+ *
+ * @category   HTTP
+ * @package    HTTP_Session
+ * @author     David Costa <gurugeek@php.net>
+ * @author     Michael Metz <pear.metz@speedpartner.de>
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @author     Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright  1997-2005 The PHP Group
+ * @license    http://www.gnu.org/licenses/lgpl.txt
+ * @version    CVS: $Id$
+ * @link       http://pear.php.net/package/HTTP_Session
+ * @since      File available since Release 0.4.0
+ */
 
 /** @const HTTP_SESSION_STARTED - The session was started with the current request */
 define("HTTP_SESSION_STARTED",      1);
@@ -89,9 +96,17 @@ define("HTTP_SESSION_CONTINUED",    2);
  * HTTP_Session::updateIdle();
  * </code>
  *
- * @author  Alexander Radivaniovich <info@wwwlab.net>
- * @package HTTP_Session
- * @access  public
+ * @category   HTTP
+ * @package    HTTP_Session
+ * @author     David Costa <gurugeek@php.net>
+ * @author     Michael Metz <pear.metz@speedpartner.de>
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @author     Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright  1997-2005 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       http://pear.php.net/package/HTTP_Session
+ * @since      Class available since Release 0.4.0
  */
 class HTTP_Session
 {
@@ -196,6 +211,11 @@ class HTTP_Session
     {
         session_unset();
         session_destroy();
+
+        // set session handlers again to avoid fatal error in case HTTP_Session::start() will be called afterwards
+        if (isset($GLOBALS['HTTP_Session_Container']) && is_a($GLOBALS['HTTP_Session_Container'], 'HTTP_Session_Container')) {
+            $GLOBALS['HTTP_Session_Container']->set();
+        }
     }
 
     /**
@@ -278,8 +298,18 @@ class HTTP_Session
     {
         if ($add) {
             $GLOBALS['__HTTP_Session_Expire'] += $time;
+
+            // update session.gc_maxlifetime
+            $currentGcMaxLifetime = HTTP_Session::setGcMaxLifetime(null);
+            HTTP_Session::setGcMaxLifetime($currentGcMaxLifetime + $time);
         } else {
             $GLOBALS['__HTTP_Session_Expire'] = $time;
+
+            // set session.gc_maxlifetime if $time is bigger than current value
+            $currentGcMaxLifetime = HTTP_Session::setGcMaxLifetime(null);
+            if ($time > $currentGcMaxLifetime) {
+                HTTP_Session::setGcMaxLifetime($time);
+            }
         }
         if (!isset($_SESSION['__HTTP_Session_Expire_TS'])) {
             $_SESSION['__HTTP_Session_Expire_TS'] = time();
@@ -564,6 +594,70 @@ class HTTP_Session
         HTTP_Session::localName($_SERVER['SCRIPT_NAME']);
     }
 
+    /**
+     * If optional parameter is specified it indicates
+     * whether the session id will automatically be appended to
+     * all links
+     *
+     * It returns the previous value of this property
+     *
+     * @static
+     * @access public
+     * @param  boolean $useTransSID If specified it will replace the previous value
+     *                              of this property
+     * @return boolean The previous value of the property
+     */
+    function useTransSID($useTransSID = null)
+    {
+        $return = ini_get('session.use_trans_sid') ? true : false;
+        if (isset($useTransSID)) {
+            ini_set('session.use_trans_sid', $useTransSID ? 1 : 0);
+        }
+        return $return;
+    }
+
+    /**
+     * If optional parameter is specified it determines the number of seconds
+     * after which session data will be seen as 'garbage' and cleaned up
+     *
+     * It returns the previous value of this property
+     *
+     * @static
+     * @access public
+     * @param  boolean $gcMaxLifetime If specified it will replace the previous value
+     *                                of this property
+     * @return boolean The previous value of the property
+     */
+    function setGcMaxLifetime($gcMaxLifetime = null)
+    {
+        $return = ini_get('session.gc_maxlifetime');
+        if (isset($gcMaxLifetime) && is_int($gcMaxLifetime) && $gcMaxLifetime >= 1) {
+            ini_set('session.gc_maxlifetime', $gcMaxLifetime);
+        }
+        return $return;
+    }
+
+    /**
+     * If optional parameter is specified it determines the
+     * probability that the gc (garbage collection) routine is started
+     * and session data is cleaned up
+     *
+     * It returns the previous value of this property
+     *
+     * @static
+     * @access public
+     * @param  boolean $gcProbability If specified it will replace the previous value
+     *                                of this property
+     * @return boolean The previous value of the property
+     */
+    function setGcProbability($gcProbability = null)
+    {
+        $return = ini_get('session.gc_probability');
+        if (isset($gcProbability) && is_int($gcProbability) && $gcProbability >= 1 && $gcProbability <= 100) {
+            ini_set('session.gc_probability', $gcProbability);
+        }
+        return $return;
+    }
 }
 
 HTTP_Session::_init();

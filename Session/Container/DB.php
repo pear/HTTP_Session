@@ -1,41 +1,44 @@
 <?php
-//
-// +-----------------------------------------------------------------------+
-// | Copyright (c) 2002, Alexander Radivanovich                            |
-// | All rights reserved.                                                  |
-// |                                                                       |
-// | Redistribution and use in source and binary forms, with or without    |
-// | modification, are permitted provided that the following conditions    |
-// | are met:                                                              |
-// |                                                                       |
-// | o Redistributions of source code must retain the above copyright      |
-// |   notice, this list of conditions and the following disclaimer.       |
-// | o Redistributions in binary form must reproduce the above copyright   |
-// |   notice, this list of conditions and the following disclaimer in the |
-// |   documentation and/or other materials provided with the distribution.|
-// | o The names of the authors may not be used to endorse or promote      |
-// |   products derived from this software without specific prior written  |
-// |   permission.                                                         |
-// |                                                                       |
-// | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS   |
-// | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT     |
-// | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR |
-// | A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT  |
-// | OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, |
-// | SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT      |
-// | LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, |
-// | DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY |
-// | THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT   |
-// | (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE |
-// | OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  |
-// |                                                                       |
-// +-----------------------------------------------------------------------+
-// | Author: Alexander Radivanovich <info@wwwlab.net>                      |
-// +-----------------------------------------------------------------------+
-//
 
-require_once "HTTP/Session/Container.php";
-require_once "DB.php";
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+ * Database container for session data
+ *
+ * PEAR::DB database container
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA  02111-1307  USA
+ *
+ * @category   HTTP
+ * @package    HTTP_Session
+ * @author     David Costa <gurugeek@php.net>
+ * @author     Michael Metz <pear.metz@speedpartner.de>
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @author     Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright  1997-2005 The PHP Group
+ * @license    http://www.gnu.org/licenses/lgpl.txt
+ * @version    CVS: $Id$
+ * @link       http://pear.php.net/package/HTTP_Session
+ * @since      File available since Release 0.4.0
+ */
+
+require_once 'HTTP/Session/Container.php';
+require_once 'DB.php';
 
 /**
  * Database container for session data
@@ -50,9 +53,17 @@ require_once "DB.php";
  * );
  * </code>
  *
- * @author  Alexander Radivanovich <info@wwwlab.net>
- * @package HTTP_Session
- * @access  public
+ * @category   HTTP
+ * @package    HTTP_Session
+ * @author     David Costa <gurugeek@php.net>
+ * @author     Michael Metz <pear.metz@speedpartner.de>
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @author     Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright  1997-2005 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       http://pear.php.net/package/HTTP_Session
+ * @since      Class available since Release 0.4.0
  */
 class HTTP_Session_Container_DB extends HTTP_Session_Container
 {
@@ -173,7 +184,7 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     {
         $query = sprintf("SELECT data FROM %s WHERE id = %s AND expiry >= %d",
                          $this->options['table'],
-                         $this->db->quote(md5($id)),
+                         $this->db->quoteSmart(md5($id)),
                          time()
                          );
         $result = $this->db->getOne($query);
@@ -193,17 +204,16 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     {
         if ((false !== $this->crc) && ($this->crc === strlen($data) . crc32($data))) {
             // $_SESSION hasn't been touched, no need to update the blob column
-            $query = sprintf("UPDATE %s SET expiry = %d WHERE id = %s AND expiry >= %d",
+            $query = sprintf("UPDATE %s SET expiry = %d WHERE id = %s",
                              $this->options['table'],
                              time() + ini_get('session.gc_maxlifetime'),
-                             $this->db->quote(md5($id)),
-                             time()
+                             $this->db->quoteSmart(md5($id))
                              );
         } else {
             // Check if table row already exists
             $query = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
                              $this->options['table'],
-                             $this->db->quote(md5($id))
+                             $this->db->quoteSmart(md5($id))
                              );
             $result = $this->db->getOne($query);
             if (DB::isError($result)) {
@@ -214,18 +224,17 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
                 // Insert new row into table
                 $query = sprintf("INSERT INTO %s (id, expiry, data) VALUES (%s, %d, %s)",
                                  $this->options['table'],
-                                 $this->db->quote(md5($id)),
+                                 $this->db->quoteSmart(md5($id)),
                                  time() + ini_get('session.gc_maxlifetime'),
-                                 $this->db->quote($data)
+                                 $this->db->quoteSmart($data)
                                  );
             } else {
                 // Update existing row
-                $query = sprintf("UPDATE %s SET expiry = %d, data = %s WHERE id = %s AND expiry >= %d",
+                $query = sprintf("UPDATE %s SET expiry = %d, data = %s WHERE id = %s",
                                  $this->options['table'],
                                  time() + ini_get('session.gc_maxlifetime'),
-                                 $this->db->quote($data),
-                                 $this->db->quote(md5($id)),
-                                 time()
+                                 $this->db->quoteSmart($data),
+                                 $this->db->quoteSmart(md5($id))
                                  );
             }
         }
@@ -246,7 +255,7 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     {
         $query = sprintf("DELETE FROM %s WHERE id = %s",
                          $this->options['table'],
-                         $this->db->quote(md5($id))
+                         $this->db->quoteSmart(md5($id))
                          );
         $result = $this->db->query($query);
         if (DB::isError($result)) {
@@ -273,7 +282,7 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
             return false;
         }
         if ($this->options['autooptimize']) {
-            switch($this->db->type) {
+            switch($this->db->phptype) {
                 case 'mysql':
                     $query = sprintf("OPTIMIZE TABLE %s", $this->options['table']);
                     break;
