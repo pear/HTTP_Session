@@ -11,22 +11,13 @@
  * it provides for you more advanced features such as
  * database container, idle and expire timeouts, etc.
  *
- * PHP versions 4 and 5
+ * PHP version 4
  *
- * LICENSE: This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- * MA  02111-1307  USA
+ * LICENSE: This source file is subject to version 3.0 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
  *
  * @category   HTTP
  * @package    HTTP_Session
@@ -35,7 +26,7 @@
  * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
  * @author     Torsten Roehr <torsten.roehr@gmx.de>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.gnu.org/licenses/lgpl.txt
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/HTTP_Session
  * @since      File available since Release 0.4.0
@@ -130,7 +121,7 @@ class HTTP_Session
         $container_class = 'HTTP_Session_Container_' . $container;
         $container_classfile = 'HTTP/Session/Container/' . $container . '.php';
 
-        include_once $container_classfile;
+        require_once $container_classfile;
         $container = new $container_class($container_options);
 
         $container->set();
@@ -297,22 +288,16 @@ class HTTP_Session
     function setExpire($time, $add = false)
     {
         if ($add) {
-            $GLOBALS['__HTTP_Session_Expire'] += $time;
+            if (!isset($_SESSION['__HTTP_Session_Expire_TS'])) {
+                $_SESSION['__HTTP_Session_Expire_TS'] = time() + $time;
+            }
 
             // update session.gc_maxlifetime
             $currentGcMaxLifetime = HTTP_Session::setGcMaxLifetime(null);
             HTTP_Session::setGcMaxLifetime($currentGcMaxLifetime + $time);
-        } else {
-            $GLOBALS['__HTTP_Session_Expire'] = $time;
 
-            // set session.gc_maxlifetime if $time is bigger than current value
-            $currentGcMaxLifetime = HTTP_Session::setGcMaxLifetime(null);
-            if ($time > $currentGcMaxLifetime) {
-                HTTP_Session::setGcMaxLifetime($time);
-            }
-        }
-        if (!isset($_SESSION['__HTTP_Session_Expire_TS'])) {
-            $_SESSION['__HTTP_Session_Expire_TS'] = time();
+        } elseif (!isset($_SESSION['__HTTP_Session_Expire_TS'])) {
+                $_SESSION['__HTTP_Session_Expire_TS'] = $time;
         }
     }
 
@@ -332,12 +317,11 @@ class HTTP_Session
     function setIdle($time, $add = false)
     {
         if ($add) {
-            $GLOBALS['__HTTP_Session_Idle'] += $time;
+            $_SESSION['__HTTP_Session_Idle'] = $time;
         } else {
-            $GLOBALS['__HTTP_Session_Idle'] = $time;
-        }
-        if (!isset($_SESSION['__HTTP_Session_Idle_TS'])) {
-            $_SESSION['__HTTP_Session_Idle_TS'] = time();
+            // substract time again because it doesn't make any sense to provide the idle time as a timestamp
+            // keep $add functionality to provide BC
+            $_SESSION['__HTTP_Session_Idle'] = $time - time();
         }
     }
 
@@ -353,7 +337,7 @@ class HTTP_Session
         if (!isset($_SESSION['__HTTP_Session_Idle_TS']) || !isset($GLOBALS['__HTTP_Session_Idle'])) {
             return 0;
         } else {
-            return $_SESSION['__HTTP_Session_Idle_TS'] + $GLOBALS['__HTTP_Session_Idle'];
+            return $_SESSION['__HTTP_Session_Idle_TS'] + $_SESSION['__HTTP_Session_Idle'];
         }
     }
 
@@ -362,12 +346,11 @@ class HTTP_Session
      *
      * @static
      * @access public
-     * @return boolean Obvious
+     * @return boolean
      */
     function isExpired()
     {
-        if ($GLOBALS['__HTTP_Session_Expire'] > 0 && isset($_SESSION['__HTTP_Session_Expire_TS']) &&
-            ($_SESSION['__HTTP_Session_Expire_TS'] + $GLOBALS['__HTTP_Session_Expire']) <= time()) {
+        if (isset($_SESSION['__HTTP_Session_Expire_TS']) && $_SESSION['__HTTP_Session_Expire_TS'] < time()) {
             return true;
         } else {
             return false;
@@ -379,12 +362,11 @@ class HTTP_Session
      *
      * @static
      * @access public
-     * @return boolean Obvious
+     * @return boolean
      */
     function isIdle()
     {
-        if ($GLOBALS['__HTTP_Session_Idle'] > 0 && isset($_SESSION['__HTTP_Session_Idle_TS']) &&
-            ($_SESSION['__HTTP_Session_Idle_TS'] + $GLOBALS['__HTTP_Session_Idle']) <= time()) {
+        if (isset($_SESSION['__HTTP_Session_Idle_TS']) && (($_SESSION['__HTTP_Session_Idle_TS'] + $_SESSION['__HTTP_Session_Idle']) < time())) {
             return true;
         } else {
             return false;
@@ -400,9 +382,7 @@ class HTTP_Session
      */
     function updateIdle()
     {
-        if (isset($_SESSION['__HTTP_Session_Idle_TS'])) {
-            $_SESSION['__HTTP_Session_Idle_TS'] = time();
-        }
+        $_SESSION['__HTTP_Session_Idle_TS'] = time();
     }
 
     /**

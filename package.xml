@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
 <package version="1.0">
   <name>HTTP_Session</name>
   <summary>Object-oriented interface to the session_* family functions</summary>
-  <description>Object-oriented interface to the session_* family functions
-it provides extra features such as database storage for
-session data using DB package. It introduces new methods
+  <description>Object-oriented interface to the session_* family functions.
+It provides extra features such as database storage for
+session data using the DB, MDB and MDB2 package. It introduces new methods
 like isNew(), useCookies(), setExpire(), setIdle(),
 isExpired(), isIdled() and others.</description>
   <maintainers>
@@ -46,23 +47,54 @@ isExpired(), isIdled() and others.</description>
     </maintainer>
     <maintainer>
       <user>troehr</user>
-      <name>Thorsten Roehr</name>
-      <email>roehr@zilleon.com</email>
+      <name>Torsten Roehr</name>
+      <email>torsten.roehr@gmx.de</email>
       <role>lead</role>
     </maintainer>
   </maintainers>
   <release>
-    <version>0.4</version>
-    <date>2003-03-08</date>
-    <license>BSD</license>
+    <version>0.5.0</version>
+    <date>2005-09-01</date>
+    <license>PHP License</license>
     <state>beta</state>
-    <notes>Fixed errors in the DB storage container (thanks to Graeme Merrall)</notes>
+    <notes>- fixed bug #1016
+- fixed bug #1077
+- fixed bug #1358
+- fixed bug #2834
+- added methods useTransSID(), setGcMaxLifetime(), setGcProbability()
+- added container for MDB and MDB2 (thanks to Lorenzo Alberton)
+- added example for container usage</notes>
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0" optional="no"/>
+      <dep type="pkg" rel="ge" version="1.3.3" optional="no">PEAR</dep>
+      <dep type="pkg" rel="ge" version="1.7.6" optional="yes">DB</dep>
+      <dep type="pkg" rel="ge" version="1.1.4" optional="yes">MDB</dep>
+      <dep type="pkg" rel="ge" version="2.0.0beta4" optional="yes">MDB2</dep>
+    </deps>
     <filelist>
-      <file role="php" baseinstalldir="HTTP" md5sum="c527b13e0264cff6e60595e855e1509d" name="Session.php"/>
-      <file role="php" baseinstalldir="HTTP" md5sum="21e7098c86b03b255b88b42019a1cada" name="Session/Container.php"/>
-      <file role="php" baseinstalldir="HTTP" md5sum="492b32c69e4e99025e805999cb4976d8" name="Session/Container/DB.php"/>
-      <file role="doc" baseinstalldir="HTTP_Session" md5sum="c392e70e711714af7c9232cabbf486a6" name="docs/HTTP_Session_Example.php"/>
-      <file role="doc" baseinstalldir="HTTP_Session" md5sum="4fe2a379fc0e044ae422d8d21fdee3e4" name="docs/sessiondata.sql"/>
+      <file role="php" baseinstalldir="HTTP" md5sum="c320b30facae3443901c962d6f54714a" name="Session.php"/>
+      <file role="php" baseinstalldir="HTTP" md5sum="bebbdf036f7fb04ef0f8a487877ce26e" name="Session/Container.php"/>
+      <file role="php" baseinstalldir="HTTP" md5sum="1a71ed66bc07f695dfa27aedf06e7e00" name="Session/Container/DB.php"/>
+      <file role="php" baseinstalldir="HTTP" md5sum="16da69c9375fbe0510c1a7fb9dcd2122" name="Session/Container/MDB.php"/>
+      <file role="php" baseinstalldir="HTTP" md5sum="0895192453ac5d9e3cfc51ff22769061" name="Session/Container/MDB2.php"/>
+      <file role="doc" baseinstalldir="HTTP_Session" md5sum="69860d2fb90c033cc527897be1167507" name="docs/HTTP_Session_Example.php"/>
+      <file role="doc" baseinstalldir="HTTP_Session" md5sum="5fd0e048fc9ad230de9aff13bdd5ce04" name="docs/Container_Example.php"/>
+      <file role="doc" baseinstalldir="HTTP_Session" md5sum="b9b35c31ef87d96a207dc43d3b570dfd" name="docs/sessiondata.sql"/>
     </filelist>
   </release>
+  <changelog>
+    <release>
+      <version>0.5.0</version>
+      <date>2005-09-01</date>
+      <license>PHP License</license>
+      <state>beta</state>
+      <notes>- fixed bug #1016
+- fixed bug #1077
+- fixed bug #1358
+- fixed bug #2834
+- added methods useTransSID(), setGcMaxLifetime(), setGcProbability()
+- added container for MDB and MDB2 (thanks to Lorenzo Alberton)
+- added example for container usage</notes>
+    </release>
+  </changelog>
 </package>

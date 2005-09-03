@@ -4,4 +4,3 @@ CREATE TABLE `sessiondata` (
   `data` text NOT NULL,
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
-
