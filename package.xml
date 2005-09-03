@@ -53,8 +53,8 @@ isExpired(), isIdled() and others.</description>
     </maintainer>
   </maintainers>
   <release>
-    <version>0.5.0</version>
-    <date>2005-09-01</date>
+    <version>0.5.1</version>
+    <date>2005-09-03</date>
     <license>PHP License</license>
     <state>beta</state>
     <notes>- fixed bug #1016
@@ -72,7 +72,7 @@ isExpired(), isIdled() and others.</description>
       <dep type="pkg" rel="ge" version="2.0.0beta4" optional="yes">MDB2</dep>
     </deps>
     <filelist>
-      <file role="php" baseinstalldir="HTTP" md5sum="c320b30facae3443901c962d6f54714a" name="Session.php"/>
+      <file role="php" baseinstalldir="HTTP" md5sum="e982893c26aaf058472353e76c81bebe" name="Session.php"/>
       <file role="php" baseinstalldir="HTTP" md5sum="bebbdf036f7fb04ef0f8a487877ce26e" name="Session/Container.php"/>
       <file role="php" baseinstalldir="HTTP" md5sum="1a71ed66bc07f695dfa27aedf06e7e00" name="Session/Container/DB.php"/>
       <file role="php" baseinstalldir="HTTP" md5sum="16da69c9375fbe0510c1a7fb9dcd2122" name="Session/Container/MDB.php"/>
@@ -84,8 +84,8 @@ isExpired(), isIdled() and others.</description>
   </release>
   <changelog>
     <release>
-      <version>0.5.0</version>
-      <date>2005-09-01</date>
+      <version>0.5.1</version>
+      <date>2005-09-03</date>
       <license>PHP License</license>
       <state>beta</state>
       <notes>- fixed bug #1016
