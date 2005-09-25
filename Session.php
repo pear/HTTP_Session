@@ -73,7 +73,7 @@ define("HTTP_SESSION_CONTINUED",    2);
  * // Setting timeouts
  * HTTP_Session::start();
  * HTTP_Session::setExpire(time() + 60 * 60); // expires in one hour
- * HTTP_Session::setIdle(10 * 60);            // idles in ten minutes
+ * HTTP_Session::setIdle(time()+ 10 * 60);    // idles in ten minutes
  * if (HTTP_Session::isExpired()) {
  *     // expired
  *     echo('Your session is expired!');
