@@ -459,6 +459,18 @@ class HTTP_Session
     }
 
     /**
+     * Checks if a session variable is registered
+     *
+     * @static
+     * @access public
+     * @return bool
+     */
+    function registered($name)
+    {
+        return session_is_registered($name);
+    }
+
+    /**
      * Returns session variable
      *
      * @static
@@ -492,6 +504,18 @@ class HTTP_Session
             $_SESSION[$name] = $value;
         }
         return $return;
+    }
+
+    /**
+     * Checks if a session variable is set
+     *
+     * @static
+     * @access public
+     * @return bool
+     */
+    function is_set($name)
+    {
+        return isset($_SESSION[$name]);
     }
 
     /**
