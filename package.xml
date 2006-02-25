@@ -73,12 +73,12 @@ isExpired(), isIdled() and others.</description>
     </deps>
     <filelist>
       <file role="php" baseinstalldir="HTTP" md5sum="e982893c26aaf058472353e76c81bebe" name="Session.php"/>
-      <file role="php" baseinstalldir="HTTP" md5sum="bebbdf036f7fb04ef0f8a487877ce26e" name="Session/Container.php"/>
-      <file role="php" baseinstalldir="HTTP" md5sum="1a71ed66bc07f695dfa27aedf06e7e00" name="Session/Container/DB.php"/>
-      <file role="php" baseinstalldir="HTTP" md5sum="16da69c9375fbe0510c1a7fb9dcd2122" name="Session/Container/MDB.php"/>
-      <file role="php" baseinstalldir="HTTP" md5sum="0895192453ac5d9e3cfc51ff22769061" name="Session/Container/MDB2.php"/>
-      <file role="doc" baseinstalldir="HTTP_Session" md5sum="69860d2fb90c033cc527897be1167507" name="docs/HTTP_Session_Example.php"/>
-      <file role="doc" baseinstalldir="HTTP_Session" md5sum="5fd0e048fc9ad230de9aff13bdd5ce04" name="docs/Container_Example.php"/>
+      <file role="php" baseinstalldir="HTTP" md5sum="71e7dfdea8e777ac75025a244e38cccf" name="Session/Container.php"/>
+      <file role="php" baseinstalldir="HTTP" md5sum="fa5a9c9fea5b23f48e4a458aa90922ae" name="Session/Container/DB.php"/>
+      <file role="php" baseinstalldir="HTTP" md5sum="9b464232b9de1ed0d38ac138d65fbefc" name="Session/Container/MDB.php"/>
+      <file role="php" baseinstalldir="HTTP" md5sum="f0b46c09f280ed7bdf4dc9c7d7ad83af" name="Session/Container/MDB2.php"/>
+      <file role="doc" baseinstalldir="HTTP_Session" md5sum="3e4ea125126f17153275dd0ccb278395" name="docs/HTTP_Session_Example.php"/>
+      <file role="doc" baseinstalldir="HTTP_Session" md5sum="3890064f6b393c45b6b619381c51b149" name="docs/Container_Example.php"/>
       <file role="doc" baseinstalldir="HTTP_Session" md5sum="b9b35c31ef87d96a207dc43d3b570dfd" name="docs/sessiondata.sql"/>
     </filelist>
   </release>
