@@ -334,7 +334,7 @@ class HTTP_Session
      */
     function sessionValidThru()
     {
-        if (!isset($_SESSION['__HTTP_Session_Idle_TS']) || !isset($GLOBALS['__HTTP_Session_Idle'])) {
+        if (!isset($_SESSION['__HTTP_Session_Idle_TS']) || !isset($_SESSION['__HTTP_Session_Idle'])) {
             return 0;
         } else {
             return $_SESSION['__HTTP_Session_Idle_TS'] + $_SESSION['__HTTP_Session_Idle'];
@@ -497,7 +497,7 @@ class HTTP_Session
      */
     function set($name, $value)
     {
-        $return = @$_SESSION[$name];
+        $return = (isset($_SESSION[$name])) ? $_SESSION[$name] : null;
         if (null === $value) {
             unset($_SESSION[$name]);
         } else {
@@ -576,7 +576,7 @@ class HTTP_Session
      */
     function localName($name = null)
     {
-        $return = @$GLOBALS['__HTTP_Session_Localname'];
+        $return = (isset($GLOBALS['__HTTP_Session_Localname'])) ? $GLOBALS['__HTTP_Session_Localname'] : null;
         if (!empty($name)) {
             $GLOBALS['__HTTP_Session_Localname'] = $name;
         }

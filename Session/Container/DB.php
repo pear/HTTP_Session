@@ -111,7 +111,7 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
      */
     function _connect($dsn)
     {
-        if (is_string($dsn)) {
+        if (is_string($dsn) || is_array($dsn)) {
             $this->db = DB::connect($dsn);
         } else if (is_object($dsn) && is_a($dsn, "db_common")) {
             $this->db = $dsn;
