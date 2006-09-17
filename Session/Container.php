@@ -166,6 +166,21 @@ class HTTP_Session_Container
     }
 
     /**
+     * This function copies session data of specified id to specified table
+     *
+     * Has to be overwritten by each container class
+     *
+     * @access public
+     * @param  mixed   $targetTable Table to replicate data to
+     * @param  mixed   $id          ID of the session
+     * @return boolean Obvious
+     */
+    function replicate($targetTable, $id = null)
+    {
+        return true;
+    }
+
+    /**
      * This function is responsible for garbage collection.
      * In the case of session handling, it is responsible
      * for deleting old, stale sessions that are hanging around.

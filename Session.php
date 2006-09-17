@@ -210,6 +210,20 @@ class HTTP_Session
     }
 
     /**
+     * This function copies session data of specified id to specified table
+     *
+     * @static
+     * @access public
+     * @param  mixed   $targetTable Table to replicate data to
+     * @param  mixed   $id          ID of the session
+     * @return boolean Obvious
+     */
+    function replicate($targetTable, $id = null)
+    {
+        return $GLOBALS['HTTP_Session_Container']->replicate($targetTable, $id);
+    }
+
+    /**
      * Free all session variables
      *
      * @todo   TODO Save expire and idle timestamps?

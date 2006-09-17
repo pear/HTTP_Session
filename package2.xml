@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.4.9" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.4.11" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
  <name>HTTP_Session</name>
  <channel>pear.php.net</channel>
  <summary>Object-oriented interface to the session_* family functions</summary>
@@ -50,32 +50,35 @@ isExpired(), isIdled() and others.</description>
   <email>tony@geeklog.net</email>
   <active>yes</active>
  </developer>
- <date>2006-05-11</date>
- <time>11:21:40</time>
+ <date>2006-09-17</date>
+ <time>10:36:08</time>
  <version>
-  <release>0.5.2</release>
-  <api>0.5.2</api>
+  <release>0.5.3</release>
+  <api>0.5.3</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license uri="http://www.php.net/license">PHP Licence</license>
- <notes>- fixed bug #6778 DB container problem
-- fixed bug #7543 bug in sessionValidThru()
-- replaced @ with isset() in set() and localName()
-- increased optional dependency for MDB2 to 2.0.1</notes>
+ <notes>- implemented request #8717: HTTP_Session::replicate()</notes>
  <contents>
   <dir baseinstalldir="HTTP" name="/">
-   <file baseinstalldir="HTTP" md5sum="6c20c32402173303e26dc55118b85233" name="docs/Container_Example.php" role="doc" />
-   <file baseinstalldir="HTTP" md5sum="64ef3d45beb830e4c7ec97dfb77404fe" name="docs/HTTP_Session_Example.php" role="doc" />
-   <file baseinstalldir="HTTP" md5sum="c77756a148429cb35ee00209d7e07efe" name="docs/sessiondata.sql" role="doc" />
-   <file baseinstalldir="HTTP" md5sum="788111774d045c7b9f8bc2fb1954913e" name="Session/Container.php" role="php" />
-   <file baseinstalldir="HTTP" md5sum="5f11363376da153c9c6ee647d71dbaf0" name="Session/Container/DB.php" role="php" />
-   <file baseinstalldir="HTTP" md5sum="1990e32185cf68cadc07fb2665824f42" name="Session/Container/MDB.php" role="php" />
-   <file baseinstalldir="HTTP" md5sum="77dfbac7a1926b70fa64cfa1e0f18085" name="Session/Container/MDB2.php" role="php" />
-   <file baseinstalldir="HTTP" md5sum="300c8bc6665b844a8c1722ac62e81c3f" name="Session.php" role="php" />
-  </dir>
+   <dir name="docs">
+    <file name="Container_Example.php" role="doc" />
+    <file name="HTTP_Session_Example.php" role="doc" />
+    <file name="sessiondata.sql" role="doc" />
+   </dir> <!-- /docs -->
+   <dir name="Session">
+    <dir name="Container">
+     <file name="DB.php" role="php" />
+     <file name="MDB.php" role="php" />
+     <file name="MDB2.php" role="php" />
+    </dir> <!-- /Session/Container -->
+    <file name="Container.php" role="php" />
+   </dir> <!-- /Session -->
+   <file name="Session.php" role="php" />
+  </dir> <!-- / -->
  </contents>
  <dependencies>
   <required>
@@ -106,6 +109,19 @@ isExpired(), isIdled() and others.</description>
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.5.3</release>
+    <api>0.5.3</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2006-09-17</date>
+   <license uri="http://www.php.net/license">PHP Licence</license>
+   <notes>- implemented request #8717: HTTP_Session::replicate()</notes>
+  </release>
   <release>
    <version>
     <release>0.5.2</release>

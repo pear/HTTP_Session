@@ -259,6 +259,57 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     }
 
     /**
+     * Replicate session data to table specified in option 'replicateBeforeDestroy'
+     *
+     * @access private
+     * @param  string   $targetTable    Table to replicate to
+     * @param  string   $id             Id of record to replicate
+     * @return bool
+     */
+    function replicate($targetTable, $id = null)
+    {
+        if (is_null($id)) {
+            $id = HTTP_Session::id();
+        }
+
+        // Check if table row already exists
+        $query = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
+                         $targetTable,
+                         $this->db->quoteSmart(md5($id))
+                        );
+        $result = $this->db->getOne($query);
+        if (DB::isError($result)) {
+            new DB_Error($result->code, PEAR_ERROR_DIE);
+           return false;
+        }
+
+        // Insert new row into dest table
+        if (0 == intval($result)) {
+            $query = sprintf("INSERT INTO %s SELECT * FROM %s WHERE id = %s",
+                             $targetTable,
+                             $this->options['table'],
+                             $this->db->quoteSmart(md5($id))
+                            );
+
+          // Update existing row
+        } else {
+            $query = sprintf("UPDATE %s dst, %s src SET dst.expiry = src.expiry, dst.data = src.data WHERE dst.id = src.id AND src.id = %s",
+                             $targetTable,
+                             $this->options['table'],
+                             $this->db->quoteSmart(md5($id))
+                            );
+        }
+
+        $result = $this->db->query($query);
+        if (DB::isError($result)) {
+            new DB_Error($result->code, PEAR_ERROR_DIE);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Garbage collection
      *
      */

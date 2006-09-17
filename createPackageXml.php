@@ -1,71 +1,40 @@
 <?php
-set_include_path('c:/xamppnew/php/pear');
+set_include_path('c:/wwwroot/pear');
 require_once 'PEAR/PackageFileManager2.php';
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
-// set values
-$channel           = 'pear.php.net';
-$package           = 'HTTP_Session';
-$licence           = 'PHP Licence';
-$summary           = 'Object-oriented interface to the session_* family functions';
-$description       = 'Object-oriented interface to the session_* family functions.
-It provides extra features such as database storage for
-session data using the DB, MDB and MDB2 package. It introduces new methods
-like isNew(), useCookies(), setExpire(), setIdle(),
-isExpired(), isIdled() and others.';
-$baseinstalldir    = 'HTTP';
-$version           = '0.5.2';
-$packagedirectory  = 'c:/xamppnew/htdocs/pear_dev/HTTP';
-$state             = 'beta';
-$filelistgenerator = 'file'; // generate from cvs or file
-$notes             = '- fixed bug #6778 DB container problem
-- fixed bug #7543 bug in sessionValidThru()
-- replaced @ with isset() in set() and localName()
-- increased optional dependency for MDB2 to 2.0.1';
+$packagefile = 'c:/wwwroot/pear_dev/Package/package2.xml';
 
-$packagexml =& new PEAR_PackageFileManager2();
-$packagexml->setOptions(array('baseinstalldir' => $baseinstalldir,
-                              'packagedirectory' => $packagedirectory,
-                              'filelistgenerator' => $filelistgenerator
-                             )
-                       );
-$packagexml->setPackage($package);
-$packagexml->setSummary($summary);
-$packagexml->setDescription($description);
-$packagexml->setChannel($channel);
-$packagexml->setAPIVersion($version);
-$packagexml->setReleaseVersion($version);
-$packagexml->setReleaseStability($state);
-$packagexml->setAPIStability($state);
-$packagexml->setNotes($notes);
-$packagexml->setPackageType('php'); // this is a PEAR-style php script package
-$packagexml->addRelease(); // set up a release section
-$packagexml->setPhpDep('4.2.0');
-$packagexml->setPearinstallerDep('1.4.0');
-$packagexml->addPackageDepWithChannel('optional', 'DB', 'pear.php.net', '1.7.6');
-$packagexml->addPackageDepWithChannel('optional', 'MDB', 'pear.php.net', '1.1.4');
-$packagexml->addPackageDepWithChannel('optional', 'MDB2', 'pear.php.net', '2.0.1');
-$packagexml->addMaintainer('lead', 'lexxx', 'Alexander Radivanovich', 'info@wwwlab.net');
-$packagexml->addMaintainer('lead', 'gurugeek', 'David Costa', 'gurugeek@php.net');
-$packagexml->addMaintainer('lead', 'neufeind', 'Stefan Neufeind', 'pear.neufeind@speedpartner.de');
-$packagexml->addMaintainer('lead', 'metz', 'Michael Metz', 'pear.metz@speedpartner.de');
-$packagexml->addMaintainer('lead', 'troehr', 'Torsten Roehr', 'troehr@php.net');
-$packagexml->addMaintainer('developer', 'negora', 'Radu Negoescu', 'php@dawnidas.com');
-$packagexml->addMaintainer('developer', 'tbibbs', 'Tony Bibbs', 'tony@geeklog.net');
-$packagexml->setLicense($licence, 'http://www.php.net/license');
-$packagexml->generateContents(); // create the <contents> tag
-$pkg =& $packagexml->exportCompatiblePackageFile1(); // get a PEAR_PackageFile object
+$options = array('filelistgenerator' => 'file',
+                 'baseinstalldir'    => 'HTTP',
+                 'outputdirectory'   => 'c:/wwwroot/pear_dev/Package',
+                 'simpleoutput'      => true,
+                 'changelogoldtonew' => false
+                );
+
+$p2 =& PEAR_PackageFileManager2::importOptions($packagefile, $options);
+$p2->setPackageType('php');
+$p2->addRelease();
+$p2->generateContents();
+$p2->setReleaseVersion('0.5.3');
+$p2->setAPIVersion('0.5.3');
+$p2->setReleaseStability('beta');
+$p2->setAPIStability('beta');
+$p2->setNotes('- implemented request #8717: HTTP_Session::replicate()');
+
+// get a compatible version 1.0 of package xml
+$p1 =& $p2->exportCompatiblePackageFile1();
 
 // write to file
 if (isset($_GET['make']) || (isset($_SERVER['argv'][1]) &&
                              $_SERVER['argv'][1] == 'make')) {
-    $pkg->writePackageFile();
-    $e = $packagexml->writePackageFile();
+    $p1->writePackageFile();
+    $e = $p2->writePackageFile();
 
   // output on screen
 } else {
-    $pkg->debugPackageFile();
-    $e = $packagexml->debugPackageFile();
+    $p1->debugPackageFile();
+    $e = $p2->debugPackageFile();
 }
 
 if (PEAR::isError($e)) {

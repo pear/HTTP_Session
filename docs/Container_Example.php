@@ -66,10 +66,12 @@ $_SESSION['counter'] = (isset($_SESSION['counter'])) ? ++$_SESSION['counter'] : 
 echo $_SESSION['counter'];
 
 if (HTTP_Session::isExpired()) {
+    //HTTP_Session::replicate('sessiondata_backup');    // Replicate data of current session to specified table
     HTTP_Session::destroy();
 }
 
 if (HTTP_Session::isIdle()) {
+    //HTTP_Session::replicate('sessiondata_backup');    // Replicate data of current session to specified table
     HTTP_Session::destroy();
 }
 HTTP_Session::updateIdle();

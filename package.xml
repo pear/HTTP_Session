@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0" packagerversion="1.4.9">
+<package version="1.0" packagerversion="1.4.11">
  <name>HTTP_Session</name>
  <summary>Object-oriented interface to the session_* family functions</summary>
  <description>Object-oriented interface to the session_* family functions.
@@ -54,14 +54,11 @@ isExpired(), isIdled() and others.
   </maintainer>
   </maintainers>
  <release>
-  <version>0.5.2</version>
-  <date>2006-05-11</date>
+  <version>0.5.3</version>
+  <date>2006-09-17</date>
   <license>PHP Licence</license>
   <state>beta</state>
-  <notes>- fixed bug #6778 DB container problem
-- fixed bug #7543 bug in sessionValidThru()
-- replaced @ with isset() in set() and localName()
-- increased optional dependency for MDB2 to 2.0.1
+  <notes>- implemented request #8717: HTTP_Session::replicate()
   </notes>
   <deps>
    <dep type="php" rel="ge" version="4.2.0" optional="no"/>
@@ -69,82 +66,34 @@ isExpired(), isIdled() and others.
    <dep type="pkg" rel="ge" version="1.1.4" optional="yes">MDB</dep>
    <dep type="pkg" rel="ge" version="2.0.1" optional="yes">MDB2</dep>
   </deps>
-  <provides type="class" name="HTTP_Session_Container" />
-  <provides type="function" name="HTTP_Session_Container::open" />
-  <provides type="function" name="HTTP_Session_Container::close" />
-  <provides type="function" name="HTTP_Session_Container::read" />
-  <provides type="function" name="HTTP_Session_Container::write" />
-  <provides type="function" name="HTTP_Session_Container::destroy" />
-  <provides type="function" name="HTTP_Session_Container::gc" />
-  <provides type="function" name="HTTP_Session_Container::set" />
-  <provides type="function" name="HTTP_Session_Open" />
-  <provides type="function" name="HTTP_Session_Close" />
-  <provides type="function" name="HTTP_Session_Read" />
-  <provides type="function" name="HTTP_Session_Write" />
-  <provides type="function" name="HTTP_Session_Destroy" />
-  <provides type="function" name="HTTP_Session_GC" />
-  <provides type="class" name="HTTP_Session_Container_DB" extends="HTTP_Session_Container" />
-  <provides type="function" name="HTTP_Session_Container_DB::open" />
-  <provides type="function" name="HTTP_Session_Container_DB::close" />
-  <provides type="function" name="HTTP_Session_Container_DB::read" />
-  <provides type="function" name="HTTP_Session_Container_DB::write" />
-  <provides type="function" name="HTTP_Session_Container_DB::destroy" />
-  <provides type="function" name="HTTP_Session_Container_DB::gc" />
-  <provides type="class" name="HTTP_Session_Container_MDB" extends="HTTP_Session_Container" />
-  <provides type="function" name="HTTP_Session_Container_MDB::open" />
-  <provides type="function" name="HTTP_Session_Container_MDB::close" />
-  <provides type="function" name="HTTP_Session_Container_MDB::read" />
-  <provides type="function" name="HTTP_Session_Container_MDB::write" />
-  <provides type="function" name="HTTP_Session_Container_MDB::destroy" />
-  <provides type="function" name="HTTP_Session_Container_MDB::gc" />
-  <provides type="class" name="HTTP_Session_Container_MDB2" extends="HTTP_Session_Container" />
-  <provides type="function" name="HTTP_Session_Container_MDB2::open" />
-  <provides type="function" name="HTTP_Session_Container_MDB2::close" />
-  <provides type="function" name="HTTP_Session_Container_MDB2::read" />
-  <provides type="function" name="HTTP_Session_Container_MDB2::write" />
-  <provides type="function" name="HTTP_Session_Container_MDB2::destroy" />
-  <provides type="function" name="HTTP_Session_Container_MDB2::gc" />
-  <provides type="class" name="HTTP_Session" />
-  <provides type="function" name="HTTP_Session::setContainer" />
-  <provides type="function" name="HTTP_Session::start" />
-  <provides type="function" name="HTTP_Session::pause" />
-  <provides type="function" name="HTTP_Session::destroy" />
-  <provides type="function" name="HTTP_Session::clear" />
-  <provides type="function" name="HTTP_Session::detectID" />
-  <provides type="function" name="HTTP_Session::name" />
-  <provides type="function" name="HTTP_Session::id" />
-  <provides type="function" name="HTTP_Session::setExpire" />
-  <provides type="function" name="HTTP_Session::setIdle" />
-  <provides type="function" name="HTTP_Session::sessionValidThru" />
-  <provides type="function" name="HTTP_Session::isExpired" />
-  <provides type="function" name="HTTP_Session::isIdle" />
-  <provides type="function" name="HTTP_Session::updateIdle" />
-  <provides type="function" name="HTTP_Session::useCookies" />
-  <provides type="function" name="HTTP_Session::isNew" />
-  <provides type="function" name="HTTP_Session::register" />
-  <provides type="function" name="HTTP_Session::unregister" />
-  <provides type="function" name="HTTP_Session::registered" />
-  <provides type="function" name="HTTP_Session::get" />
-  <provides type="function" name="HTTP_Session::set" />
-  <provides type="function" name="HTTP_Session::is_set" />
-  <provides type="function" name="HTTP_Session::getLocal" />
-  <provides type="function" name="HTTP_Session::setLocal" />
-  <provides type="function" name="HTTP_Session::localName" />
-  <provides type="function" name="HTTP_Session::useTransSID" />
-  <provides type="function" name="HTTP_Session::setGcMaxLifetime" />
-  <provides type="function" name="HTTP_Session::setGcProbability" />
   <filelist>
-   <file role="doc" baseinstalldir="HTTP" name="docs/Container_Example.php"/>
-   <file role="doc" baseinstalldir="HTTP" name="docs/HTTP_Session_Example.php"/>
-   <file role="doc" baseinstalldir="HTTP" name="docs/sessiondata.sql"/>
-   <file role="php" baseinstalldir="HTTP" name="Session/Container.php"/>
-   <file role="php" baseinstalldir="HTTP" name="Session/Container/DB.php"/>
-   <file role="php" baseinstalldir="HTTP" name="Session/Container/MDB.php"/>
-   <file role="php" baseinstalldir="HTTP" name="Session/Container/MDB2.php"/>
-   <file role="php" baseinstalldir="HTTP" name="Session.php"/>
+   <dir name="/" baseinstalldir="HTTP">
+    <dir name="docs">
+     <file role="doc" name="Container_Example.php"/>
+     <file role="doc" name="HTTP_Session_Example.php"/>
+     <file role="doc" name="sessiondata.sql"/>
+    </dir> <!-- /docs -->
+    <dir name="Session">
+     <dir name="Container">
+      <file role="php" name="DB.php"/>
+      <file role="php" name="MDB.php"/>
+      <file role="php" name="MDB2.php"/>
+     </dir> <!-- /Session/Container -->
+     <file role="php" name="Container.php"/>
+    </dir> <!-- /Session -->
+    <file role="php" name="Session.php"/>
+   </dir> <!-- / -->
   </filelist>
  </release>
  <changelog>
+   <release>
+    <version>0.5.3</version>
+    <date>2006-09-17</date>
+    <license>PHP Licence</license>
+    <state>beta</state>
+    <notes>- implemented request #8717: HTTP_Session::replicate()
+    </notes>
+   </release>
    <release>
     <version>0.5.2</version>
     <date>2006-05-11</date>
