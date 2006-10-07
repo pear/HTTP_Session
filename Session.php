@@ -498,7 +498,8 @@ class HTTP_Session
         if (!isset($_SESSION[$name]) && isset($default)) {
             $_SESSION[$name] = $default;
         }
-        return $_SESSION[$name];
+        $return = (isset($_SESSION[$name])) ? $_SESSION[$name] : null;
+        return $return;
     }
 
     /**
@@ -546,7 +547,7 @@ class HTTP_Session
     function &getLocal($name, $default = null)
     {
         $local = md5(HTTP_Session::localName());
-        if (!is_array($_SESSION[$local])) {
+        if (!isset($_SESSION[$local]) || !is_array($_SESSION[$local])) {
             $_SESSION[$local] = array();
         }
         if (!isset($_SESSION[$local][$name]) && isset($default)) {
@@ -568,10 +569,10 @@ class HTTP_Session
     function setLocal($name, $value)
     {
         $local = md5(HTTP_Session::localName());
-        if (!is_array($_SESSION[$local])) {
+        if (!isset($_SESSION[$local]) || !is_array($_SESSION[$local])) {
             $_SESSION[$local] = array();
         }
-        $return = $_SESSION[$local][$name];
+        $return = (isset($_SESSION[$local][$name])) ? $_SESSION[$local][$name] : null;
         if (null === $value) {
             unset($_SESSION[$local][$name]);
         } else {
