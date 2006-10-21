@@ -57,6 +57,8 @@ define("HTTP_SESSION_CONTINUED",    2);
  *     echo('new session was created with the current request');
  *     $visitors++; // Increase visitors count
  * }
+ *
+ * //HTTP_Session::regenerateId();
  * </code>
  *
  * Example 2:
@@ -206,6 +208,36 @@ class HTTP_Session
         // set session handlers again to avoid fatal error in case HTTP_Session::start() will be called afterwards
         if (isset($GLOBALS['HTTP_Session_Container']) && is_a($GLOBALS['HTTP_Session_Container'], 'HTTP_Session_Container')) {
             $GLOBALS['HTTP_Session_Container']->set();
+        }
+    }
+
+    /**
+     * Calls session_regenerate_id() if available
+     *
+     * @static
+     * @access public
+     * @param  bool    $deleteOldSessionData    Whether to delete data of old session
+     * @return boolean Obvious
+     */
+    function regenerateId($deleteOldSessionData = false)
+    {
+        if (function_exists('session_regenerate_id')) {
+            return session_regenerate_id($deleteOldSessionData);
+
+          // emulate session_regenerate_id()
+        } else {
+
+            do {
+              $newId = uniqid(dechex(rand()));
+            } while ($newId === session_id());
+
+            if ($deleteOldSessionData) {
+                session_unset();
+            }
+
+            session_id($newId);
+
+            return true;
         }
     }
 
