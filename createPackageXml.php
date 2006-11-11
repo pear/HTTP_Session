@@ -16,11 +16,14 @@ $p2 =& PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->addRelease();
 $p2->generateContents();
-$p2->setReleaseVersion('0.5.3');
-$p2->setAPIVersion('0.5.3');
+$p2->setReleaseVersion('0.5.4');
+$p2->setAPIVersion('0.5.4');
 $p2->setReleaseStability('beta');
 $p2->setAPIStability('beta');
-$p2->setNotes('- implemented request #8717: HTTP_Session::replicate()');
+$p2->setNotes('- fixed bug #8815: Notices with error_reporting(E_ALL)
+- implemented request #8911: Add the possibilty to change the session id after destroy of old one
+- implemented request #9261: Add destructor to allow usage in PHP > 5.0.5
+- added End-user Documentation');
 
 // get a compatible version 1.0 of package xml
 $p1 =& $p2->exportCompatiblePackageFile1();

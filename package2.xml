@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.4.11" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.5.0a1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
  <name>HTTP_Session</name>
  <channel>pear.php.net</channel>
  <summary>Object-oriented interface to the session_* family functions</summary>
@@ -50,18 +50,21 @@ isExpired(), isIdled() and others.</description>
   <email>tony@geeklog.net</email>
   <active>yes</active>
  </developer>
- <date>2006-09-17</date>
- <time>10:36:08</time>
+ <date>2006-11-11</date>
+ <time>12:51:20</time>
  <version>
-  <release>0.5.3</release>
-  <api>0.5.3</api>
+  <release>0.5.4</release>
+  <api>0.5.4</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license uri="http://www.php.net/license">PHP Licence</license>
- <notes>- implemented request #8717: HTTP_Session::replicate()</notes>
+ <notes>- fixed bug #8815: Notices with error_reporting(E_ALL)
+- implemented request #8911: Add the possibilty to change the session id after destroy of old one
+- implemented request #9261: Add destructor to allow usage in PHP &gt; 5.0.5
+- added End-user Documentation</notes>
  <contents>
   <dir baseinstalldir="HTTP" name="/">
    <dir name="docs">
@@ -77,6 +80,7 @@ isExpired(), isIdled() and others.</description>
     </dir> <!-- /Session/Container -->
     <file name="Container.php" role="php" />
    </dir> <!-- /Session -->
+   <file name="createPackageXml.php" role="php" />
    <file name="Session.php" role="php" />
   </dir> <!-- / -->
  </contents>
@@ -109,6 +113,22 @@ isExpired(), isIdled() and others.</description>
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.5.4</release>
+    <api>0.5.4</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2006-11-11</date>
+   <license uri="http://www.php.net/license">PHP Licence</license>
+   <notes>- fixed bug #8815: Notices with error_reporting(E_ALL)
+- implemented request #8911: Add the possibilty to change the session id after destroy of old one
+- implemented request #9261: Add destructor to allow usage in PHP &gt; 5.0.5
+- added End-user Documentation</notes>
+  </release>
   <release>
    <version>
     <release>0.5.3</release>

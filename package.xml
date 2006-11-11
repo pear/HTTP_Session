@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0" packagerversion="1.4.11">
+<package version="1.0" packagerversion="1.5.0a1">
  <name>HTTP_Session</name>
  <summary>Object-oriented interface to the session_* family functions</summary>
  <description>Object-oriented interface to the session_* family functions.
@@ -54,11 +54,14 @@ isExpired(), isIdled() and others.
   </maintainer>
   </maintainers>
  <release>
-  <version>0.5.3</version>
-  <date>2006-09-17</date>
+  <version>0.5.4</version>
+  <date>2006-11-11</date>
   <license>PHP Licence</license>
   <state>beta</state>
-  <notes>- implemented request #8717: HTTP_Session::replicate()
+  <notes>- fixed bug #8815: Notices with error_reporting(E_ALL)
+- implemented request #8911: Add the possibilty to change the session id after destroy of old one
+- implemented request #9261: Add destructor to allow usage in PHP &gt; 5.0.5
+- added End-user Documentation
   </notes>
   <deps>
    <dep type="php" rel="ge" version="4.2.0" optional="no"/>
@@ -81,11 +84,23 @@ isExpired(), isIdled() and others.
      </dir> <!-- /Session/Container -->
      <file role="php" name="Container.php"/>
     </dir> <!-- /Session -->
+    <file role="php" name="createPackageXml.php"/>
     <file role="php" name="Session.php"/>
    </dir> <!-- / -->
   </filelist>
  </release>
  <changelog>
+   <release>
+    <version>0.5.4</version>
+    <date>2006-11-11</date>
+    <license>PHP Licence</license>
+    <state>beta</state>
+    <notes>- fixed bug #8815: Notices with error_reporting(E_ALL)
+- implemented request #8911: Add the possibilty to change the session id after destroy of old one
+- implemented request #9261: Add destructor to allow usage in PHP &gt; 5.0.5
+- added End-user Documentation
+    </notes>
+   </release>
    <release>
     <version>0.5.3</version>
     <date>2006-09-17</date>
