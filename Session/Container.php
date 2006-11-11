@@ -217,6 +217,16 @@ class HTTP_Session_Container
         );
     }
 
+    /**
+     * Destructor for compatibility with PHP >= 5.0.5
+     *
+     * @access private
+     * @return void
+     */
+    function __destruct()
+    {
+        session_write_close();
+    }
 }
 
 // Delegate function calls to the object's methods
