@@ -225,22 +225,46 @@ class HTTP_Session_Container
      */
     function __destruct()
     {
+        $GLOBALS['HTTP_Session_Container'] =& $this;
         session_write_close();
     }
 }
 
 // Delegate function calls to the object's methods
 /** @ignore */
-function HTTP_Session_Open($save_path, $session_name) { return $GLOBALS['HTTP_Session_Container']->open($save_path, $session_name); }
+function HTTP_Session_Open($save_path, $session_name)
+{
+    return (isset($GLOBALS['HTTP_Session_Container'])) ? $GLOBALS['HTTP_Session_Container']->open($save_path, $session_name)
+                                                       : false;
+}
 /** @ignore */
-function HTTP_Session_Close()                         { return $GLOBALS['HTTP_Session_Container']->close(); }
+function HTTP_Session_Close()
+{
+    return (isset($GLOBALS['HTTP_Session_Container'])) ? $GLOBALS['HTTP_Session_Container']->close()
+                                                       : false;
+}
 /** @ignore */
-function HTTP_Session_Read($id)                       { return $GLOBALS['HTTP_Session_Container']->read($id); }
+function HTTP_Session_Read($id)
+{
+    return (isset($GLOBALS['HTTP_Session_Container'])) ? $GLOBALS['HTTP_Session_Container']->read($id)
+                                                       : false;
+}
 /** @ignore */
-function HTTP_Session_Write($id, $data)               { return $GLOBALS['HTTP_Session_Container']->write($id, $data); }
+function HTTP_Session_Write($id, $data)
+{
+    return (isset($GLOBALS['HTTP_Session_Container'])) ? $GLOBALS['HTTP_Session_Container']->write($id, $data)
+                                                       : false;
+}
 /** @ignore */
-function HTTP_Session_Destroy($id)                    { return $GLOBALS['HTTP_Session_Container']->destroy($id); }
+function HTTP_Session_Destroy($id)
+{
+    return (isset($GLOBALS['HTTP_Session_Container'])) ? $GLOBALS['HTTP_Session_Container']->destroy($id)
+                                                       : false;
+}
 /** @ignore */
-function HTTP_Session_GC($maxlifetime)                { return $GLOBALS['HTTP_Session_Container']->gc($maxlifetime); }
-
+function HTTP_Session_GC($maxlifetime)
+{
+    return (isset($GLOBALS['HTTP_Session_Container'])) ? $GLOBALS['HTTP_Session_Container']->gc($maxlifetime)
+                                                       : false;
+}
 ?>
