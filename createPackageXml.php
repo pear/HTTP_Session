@@ -9,7 +9,8 @@ $options = array('filelistgenerator' => 'file',
                  'baseinstalldir'    => 'HTTP',
                  'outputdirectory'   => 'c:/wwwroot/pear_dev/Package',
                  'simpleoutput'      => true,
-                 'changelogoldtonew' => false
+                 'changelogoldtonew' => false,
+                 'ignore'            => array('createPackageXml.php')
                 );
 
 $p2 =& PEAR_PackageFileManager2::importOptions($packagefile, $options);

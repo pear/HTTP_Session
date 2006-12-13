@@ -84,7 +84,6 @@ isExpired(), isIdled() and others.
      </dir> <!-- /Session/Container -->
      <file role="php" name="Container.php"/>
     </dir> <!-- /Session -->
-    <file role="php" name="createPackageXml.php"/>
     <file role="php" name="Session.php"/>
    </dir> <!-- / -->
   </filelist>
