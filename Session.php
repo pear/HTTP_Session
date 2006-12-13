@@ -46,7 +46,7 @@ define("HTTP_SESSION_CONTINUED",    2);
  * it provides for you more advanced features such as
  * database container, idle and expire timeouts, etc.
  *
- * Expample 1:
+ * Example 1:
  *
  * <code>
  * // Setting some options and detecting of a new session
