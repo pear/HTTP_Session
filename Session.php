@@ -525,12 +525,31 @@ class HTTP_Session
      * @param  mixed  $default Default value of a variable if not set
      * @return mixed  Value of a variable
      */
-    function &get($name, $default = null)
+    function get($name, $default = null)
     {
         if (!isset($_SESSION[$name]) && isset($default)) {
             $_SESSION[$name] = $default;
         }
         $return = (isset($_SESSION[$name])) ? $_SESSION[$name] : null;
+        return $return;
+    }
+
+    /**
+     * Returns session variable by reference
+     *
+     * @static
+     * @access public
+     * @param  string $name    Name of a variable
+     * @return mixed  Value of a variable
+     */
+    function &getRef($name)
+    {
+        if (isset($_SESSION[$name])) {
+            $return =& $_SESSION[$name];
+        } else {
+            $return = null;
+        }
+
         return $return;
     }
 
@@ -550,6 +569,23 @@ class HTTP_Session
         } else {
             $_SESSION[$name] = $value;
         }
+        return $return;
+    }
+
+    /**
+     * Sets session variable by reference
+     *
+     * @access public
+     * @param  string $name  Name of a variable
+     * @param  mixed  $value Value of a variable
+     * @return mixed  Old value of a variable
+     */
+    function setRef($name, &$value)
+    {
+        $return = (isset($_SESSION[$name])) ? $_SESSION[$name] : null;
+
+        $_SESSION[$name] =& $value;
+
         return $return;
     }
 
