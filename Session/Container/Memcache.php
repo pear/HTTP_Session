@@ -52,14 +52,6 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
     var $mc;
 
     /**
-     * Session data cache id
-     *
-     * @var     mixed
-     * @access  private
-     */
-    var $crc = false;
-
-    /**
      * Constructor method
      *
      * $options is an array with the options.<br>
@@ -152,7 +144,6 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
     function read($id)
     {
         $result    = $this->mc->get($this->options['prefix'] . $id);
-        $this->crc = strlen($result) . crc32($result);
         return $result;
     }
 
@@ -166,14 +157,11 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
      */
     function write($id, $data)
     {
-        if ($this->crc !== strlen($data) . crc32($data)) {
-
-            $this->mc->set($this->options['prefix'] . $id,
-                           $data,
-                           MEMCACHE_COMPRESSED,
-                           time() + ini_get('session.gc_maxlifetime')
-                          );
-        }
+        $this->mc->set($this->options['prefix'] . $id,
+                       $data,
+                       MEMCACHE_COMPRESSED,
+                       time() + ini_get('session.gc_maxlifetime')
+                      );
 
         return true;
     }
