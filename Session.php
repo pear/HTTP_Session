@@ -150,7 +150,9 @@ class HTTP_Session
     function start($name = 'SessionID', $id = null)
     {
         HTTP_Session::name($name);
-        if (is_null(HTTP_Session::detectID())) {
+        if ($id) {
+            HTTP_Session::id($id);
+        } elseif (is_null(HTTP_Session::detectID())) {
             HTTP_Session::id($id ? $id : uniqid(dechex(rand())));
         }
         session_start();
