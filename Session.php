@@ -680,7 +680,7 @@ class HTTP_Session
         ini_set('session.auto_start', 0);
 
         // Set local name equal to the current script name
-        HTTP_Session::localName($_SERVER['SCRIPT_NAME']);
+        HTTP_Session::localName($_SERVER['PHP_SELF']);
     }
 
     /**
