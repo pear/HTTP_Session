@@ -15,18 +15,18 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   HTTP
- * @package    HTTP_Session
- * @author     Alexander Radivanovich <info@wwwlab.net>
- * @author     David Costa <gurugeek@php.net>
- * @author     Michael Metz <pear.metz@speedpartner.de>
- * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
- * @author     Torsten Roehr <torsten.roehr@gmx.de>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/HTTP_Session
- * @since      File available since Release 0.4.0
+ * @category  HTTP
+ * @package   HTTP_Session
+ * @author    Alexander Radivanovich <info@wwwlab.net>
+ * @author    David Costa <gurugeek@php.net>
+ * @author    Michael Metz <pear.metz@speedpartner.de>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @author    Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright 1997-2005 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/HTTP_Session
+ * @since     File available since Release 0.4.0
  */
 
 require_once 'HTTP/Session/Container.php';
@@ -45,21 +45,20 @@ require_once 'DB.php';
  * );
  * </code>
  *
- * @category   HTTP
- * @package    HTTP_Session
- * @author     David Costa <gurugeek@php.net>
- * @author     Michael Metz <pear.metz@speedpartner.de>
- * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
- * @author     Torsten Roehr <torsten.roehr@gmx.de>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/HTTP_Session
- * @since      Class available since Release 0.4.0
+ * @category  HTTP
+ * @package   HTTP_Session
+ * @author    David Costa <gurugeek@php.net>
+ * @author    Michael Metz <pear.metz@speedpartner.de>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @author    Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright 1997-2005 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/HTTP_Session
+ * @since     Class available since Release 0.4.0
  */
 class HTTP_Session_Container_DB extends HTTP_Session_Container
 {
-
     /**
      * DB connection object
      *
@@ -88,9 +87,10 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
      * the table on garbage collection, default is 'false'.</li>
      * </ul>
      *
+     * @param array $options Options
+     *
      * @access public
-     * @param  array  $options The options
-     * @return void
+     * @return object
      */
     function HTTP_Session_Container_DB($options)
     {
@@ -105,9 +105,10 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     /**
      * Connect to database by using the given DSN string
      *
+     * @param string $dsn DSN string
+     *
      * @access private
-     * @param  string DSN string
-     * @return mixed  Object on error, otherwise bool
+     * @return mixed   Object on error, otherwise bool
      */
     function _connect($dsn)
     {
@@ -118,7 +119,8 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
         } else if (is_object($dsn) && DB::isError($dsn)) {
             return new DB_Error($dsn->code, PEAR_ERROR_DIE);
         } else {
-            return new PEAR_Error("The given dsn was not valid in file " . __FILE__ . " at line " . __LINE__,
+            return new PEAR_Error("The given dsn was not valid in file " . __FILE__
+                                  . " at line " . __LINE__,
                                   41,
                                   PEAR_ERROR_RETURN,
                                   null,
@@ -138,17 +140,22 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
      * Set some default options
      *
      * @access private
+     * @return void
      */
     function _setDefaults()
     {
-        $this->options['dsn']           = null;
-        $this->options['table']         = 'sessiondata';
-        $this->options['autooptimize']  = false;
+        $this->options['dsn']          = null;
+        $this->options['table']        = 'sessiondata';
+        $this->options['autooptimize'] = false;
     }
 
     /**
      * Establish connection to a database
      *
+     * @param string $save_path    Save path
+     * @param string $session_name Session name
+     *
+     * @return bool
      */
     function open($save_path, $session_name)
     {
@@ -162,6 +169,7 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     /**
      * Free resources
      *
+     * @return void
      */
     function close()
     {
@@ -171,14 +179,16 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     /**
      * Read session data
      *
+     * @param string $id Session id
+     *
+     * @return void
      */
     function read($id)
     {
         $query = sprintf("SELECT data FROM %s WHERE id = %s AND expiry >= %d",
                          $this->options['table'],
                          $this->db->quoteSmart(md5($id)),
-                         time()
-                         );
+                         time());
         $result = $this->db->getOne($query);
         if (DB::isError($result)) {
             new DB_Error($result->code, PEAR_ERROR_DIE);
@@ -191,22 +201,25 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     /**
      * Write session data
      *
+     * @param string $id   Session id
+     * @param mixed  $data Data
+     *
+     * @return bool
      */
     function write($id, $data)
     {
-        if ((false !== $this->crc) && ($this->crc === strlen($data) . crc32($data))) {
+        if ((false !== $this->crc) &&
+            ($this->crc === strlen($data) . crc32($data))) {
             // $_SESSION hasn't been touched, no need to update the blob column
             $query = sprintf("UPDATE %s SET expiry = %d WHERE id = %s",
                              $this->options['table'],
                              time() + ini_get('session.gc_maxlifetime'),
-                             $this->db->quoteSmart(md5($id))
-                             );
+                             $this->db->quoteSmart(md5($id)));
         } else {
             // Check if table row already exists
             $query = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
                              $this->options['table'],
-                             $this->db->quoteSmart(md5($id))
-                             );
+                             $this->db->quoteSmart(md5($id)));
             $result = $this->db->getOne($query);
             if (DB::isError($result)) {
                 new DB_Error($result->code, PEAR_ERROR_DIE);
@@ -218,16 +231,14 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
                                  $this->options['table'],
                                  $this->db->quoteSmart(md5($id)),
                                  time() + ini_get('session.gc_maxlifetime'),
-                                 $this->db->quoteSmart($data)
-                                 );
+                                 $this->db->quoteSmart($data));
             } else {
                 // Update existing row
                 $query = sprintf("UPDATE %s SET expiry = %d, data = %s WHERE id = %s",
                                  $this->options['table'],
                                  time() + ini_get('session.gc_maxlifetime'),
                                  $this->db->quoteSmart($data),
-                                 $this->db->quoteSmart(md5($id))
-                                 );
+                                 $this->db->quoteSmart(md5($id)));
             }
         }
         $result = $this->db->query($query);
@@ -242,13 +253,15 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     /**
      * Destroy session data
      *
+     * @param string $id Session id
+     *
+     * @return void
      */
     function destroy($id)
     {
         $query = sprintf("DELETE FROM %s WHERE id = %s",
                          $this->options['table'],
-                         $this->db->quoteSmart(md5($id))
-                         );
+                         $this->db->quoteSmart(md5($id)));
         $result = $this->db->query($query);
         if (DB::isError($result)) {
             new DB_Error($result->code, PEAR_ERROR_DIE);
@@ -261,9 +274,10 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     /**
      * Replicate session data to table specified in option 'replicateBeforeDestroy'
      *
+     * @param string $targetTable Table to replicate to
+     * @param string $id          Id of record to replicate
+     *
      * @access private
-     * @param  string   $targetTable    Table to replicate to
-     * @param  string   $id             Id of record to replicate
      * @return bool
      */
     function replicate($targetTable, $id = null)
@@ -275,12 +289,11 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
         // Check if table row already exists
         $query = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
                          $targetTable,
-                         $this->db->quoteSmart(md5($id))
-                        );
+                         $this->db->quoteSmart(md5($id)));
         $result = $this->db->getOne($query);
         if (DB::isError($result)) {
             new DB_Error($result->code, PEAR_ERROR_DIE);
-           return false;
+            return false;
         }
 
         // Insert new row into dest table
@@ -288,16 +301,14 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
             $query = sprintf("INSERT INTO %s SELECT * FROM %s WHERE id = %s",
                              $targetTable,
                              $this->options['table'],
-                             $this->db->quoteSmart(md5($id))
-                            );
+                             $this->db->quoteSmart(md5($id)));
 
-          // Update existing row
         } else {
+            // Update existing row
             $query = sprintf("UPDATE %s dst, %s src SET dst.expiry = src.expiry, dst.data = src.data WHERE dst.id = src.id AND src.id = %s",
                              $targetTable,
                              $this->options['table'],
-                             $this->db->quoteSmart(md5($id))
-                            );
+                             $this->db->quoteSmart(md5($id)));
         }
 
         $result = $this->db->query($query);
@@ -312,13 +323,15 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
     /**
      * Garbage collection
      *
+     * @param int $maxlifetime Maximum lifetime
+     *
+     * @return bool
      */
     function gc($maxlifetime)
     {
         $query = sprintf("DELETE FROM %s WHERE expiry < %d",
                          $this->options['table'],
-                         time()
-                         );
+                         time());
         $result = $this->db->query($query);
         if (DB::isError($result)) {
             new DB_Error($result->code, PEAR_ERROR_DIE);
@@ -326,15 +339,15 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
         }
         if ($this->options['autooptimize']) {
             switch($this->db->phptype) {
-                case 'mysql':
-                    $query = sprintf("OPTIMIZE TABLE %s", $this->options['table']);
-                    break;
-                case 'pgsql':
-                    $query = sprintf("VACUUM %s", $this->options['table']);
-                    break;
-                default:
-                    $query = null;
-                    break;
+            case 'mysql':
+                $query = sprintf("OPTIMIZE TABLE %s", $this->options['table']);
+                break;
+            case 'pgsql':
+                $query = sprintf("VACUUM %s", $this->options['table']);
+                break;
+            default:
+                $query = null;
+                break;
             }
             if (isset($query)) {
                 $result = $this->db->query($query);
@@ -347,7 +360,5 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
 
         return true;
     }
-
 }
-
 ?>

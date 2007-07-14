@@ -13,38 +13,37 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   HTTP
- * @package    HTTP_Session
- * @author     Alexander Radivanovich <info@wwwlab.net>
- * @author     David Costa <gurugeek@php.net>
- * @author     Michael Metz <pear.metz@speedpartner.de>
- * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
- * @author     Torsten Roehr <torsten.roehr@gmx.de>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/HTTP_Session
- * @since      File available since Release 0.4.0
+ * @category  HTTP
+ * @package   HTTP_Session
+ * @author    Alexander Radivanovich <info@wwwlab.net>
+ * @author    David Costa <gurugeek@php.net>
+ * @author    Michael Metz <pear.metz@speedpartner.de>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @author    Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright 1997-2005 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/HTTP_Session
+ * @since     File available since Release 0.4.0
  */
 
 /**
  * Container class for storing session data
  *
- * @category   HTTP
- * @package    HTTP_Session
- * @author     David Costa <gurugeek@php.net>
- * @author     Michael Metz <pear.metz@speedpartner.de>
- * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
- * @author     Torsten Roehr <torsten.roehr@gmx.de>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/HTTP_Session
- * @since      Class available since Release 0.4.0
+ * @category  HTTP
+ * @package   HTTP_Session
+ * @author    David Costa <gurugeek@php.net>
+ * @author    Michael Metz <pear.metz@speedpartner.de>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @author    Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright 1997-2005 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/HTTP_Session
+ * @since     Class available since Release 0.4.0
  */
 class HTTP_Session_Container
 {
-
     /**
      * Additional options for the container object
      *
@@ -56,9 +55,10 @@ class HTTP_Session_Container
     /**
      * Constrtuctor method
      *
+     * @param array $options Additional options for the container object
+     *
      * @access public
-     * @param  array  $options Additional options for the container object
-     * @return void
+     * @return object
      */
     function HTTP_Session_Container($options = null)
     {
@@ -72,6 +72,7 @@ class HTTP_Session_Container
      * Set some default options
      *
      * @access private
+     * @return void
      */
     function _setDefaults()
     {
@@ -80,8 +81,10 @@ class HTTP_Session_Container
     /**
      * Parse options passed to the container class
      *
+     * @param array $options Options
+     *
      * @access private
-     * @param array Options
+     * @return void
      */
     function _parseOptions($options)
     {
@@ -93,10 +96,13 @@ class HTTP_Session_Container
     }
 
     /**
-     * This function is called by the session
-     * handler to initialize things
+     * This function is called by the session handler to initialize things
+     *
+     * @param string $save_path    Save path
+     * @param string $session_name Session name
      *
      * @access public
+     * @return bool
      */
     function open($save_path, $session_name)
     {
@@ -110,6 +116,7 @@ class HTTP_Session_Container
      * Has to be overwritten by each container class
      *
      * @access public
+     * @return bool
      */
     function close()
     {
@@ -124,9 +131,10 @@ class HTTP_Session_Container
      *
      * Has to be overwritten by each container class
      *
+     * @param string $id ID of the session
+     *
      * @access public
-     * @param  mixed  $id ID of the session
-     * @return mixed      The data associated with a given session ID
+     * @return string
      */
     function read($id)
     {
@@ -140,10 +148,11 @@ class HTTP_Session_Container
      *
      * Has to be overwritten by each container class
      *
+     * @param string $id   ID of the session
+     * @param mixed  $data The data associated with a given session ID
+     *
      * @access public
-     * @param  mixed   $id   ID of the session
-     * @param  mixed   $data The data associated with a given session ID
-     * @return boolean Obvious
+     * @return bool
      */
     function write($id, $data)
     {
@@ -156,9 +165,10 @@ class HTTP_Session_Container
      *
      * Has to be overwritten by each container class
      *
+     * @param string $id ID of the session
+     *
      * @access public
-     * @param  mixed  $id ID of the session
-     * @return boolean Obvious
+     * @return bool
      */
     function destroy($id)
     {
@@ -170,10 +180,11 @@ class HTTP_Session_Container
      *
      * Has to be overwritten by each container class
      *
+     * @param string $targetTable Table to replicate data to
+     * @param string $id          ID of the session
+     *
      * @access public
-     * @param  mixed   $targetTable Table to replicate data to
-     * @param  mixed   $id          ID of the session
-     * @return boolean Obvious
+     * @return bool
      */
     function replicate($targetTable, $id = null)
     {
@@ -188,9 +199,10 @@ class HTTP_Session_Container
      *
      * Has to be overwritten by each container class
      *
+     * @param integer $maxlifetime Maximum lifetime
+     *
      * @access public
-     * @param  integer $maxlifetime ???
-     * @return boolean Obvious
+     * @return bool
      */
     function gc($maxlifetime)
     {
@@ -207,14 +219,12 @@ class HTTP_Session_Container
     {
         $GLOBALS['HTTP_Session_Container'] =& $this;
         session_module_name('user');
-        session_set_save_handler(
-            'HTTP_Session_Open',
-            'HTTP_Session_Close',
-            'HTTP_Session_Read',
-            'HTTP_Session_Write',
-            'HTTP_Session_Destroy',
-            'HTTP_Session_GC'
-        );
+        session_set_save_handler('HTTP_Session_Open',
+                                 'HTTP_Session_Close',
+                                 'HTTP_Session_Read',
+                                 'HTTP_Session_Write',
+                                 'HTTP_Session_Destroy',
+                                 'HTTP_Session_GC');
     }
 
     /**

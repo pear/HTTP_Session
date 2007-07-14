@@ -15,15 +15,15 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   HTTP
- * @package    HTTP_Session
- * @author     Chad Wagner <chad.wagner@gmail.com>
- * @author     Torsten Roehr <torsten.roehr@gmx.de>
- * @copyright  1997-2007 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/HTTP_Session
- * @since      File available since Release 0.5.6
+ * @category  HTTP
+ * @package   HTTP_Session
+ * @author    Chad Wagner <chad.wagner@gmail.com>
+ * @author    Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright 1997-2007 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/HTTP_Session
+ * @since     File available since Release 0.5.6
  */
 
 require_once 'HTTP/Session/Container.php';
@@ -31,15 +31,15 @@ require_once 'HTTP/Session/Container.php';
 /**
  * Database container for session data
  *
- * @category   HTTP
- * @package    HTTP_Session
- * @author     Chad Wagner <chad.wagner@gmail.com>
- * @author     Torsten Roehr <torsten.roehr@gmx.de>
- * @copyright  1997-2007 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/HTTP_Session
- * @since      Class available since Release 0.5.6
+ * @category  HTTP
+ * @package   HTTP_Session
+ * @author    Chad Wagner <chad.wagner@gmail.com>
+ * @author    Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright 1997-2007 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/HTTP_Session
+ * @since     Class available since Release 0.5.6
  */
 class HTTP_Session_Container_Memcache extends HTTP_Session_Container
 {
@@ -61,9 +61,10 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
      * <li>'prefix' - Key prefix, default is 'sessiondata:'</li>
      * </ul>
      *
-     * @access  public
-     * @param   array   $options    The options
-     * @return  void
+     * @param array $options Options
+     *
+     * @access public
+     * @return object
      */
     function HTTP_Session_Container_Memcache($options)
     {
@@ -77,9 +78,10 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
     /**
      * Connect to database by using the given DSN string
      *
-     * @access  private
-     * @param   string  DSN string
-     * @return  mixed   Object on error, otherwise bool
+     * @param string $mc Memcache object
+     *
+     * @access private
+     * @return mixed   Object on error, otherwise bool
      */
     function _connect($mc)
     {
@@ -88,7 +90,8 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
 
         } else {
 
-            return new PEAR_Error('The given memcache object was not valid in file ' . __FILE__ . ' at line ' . __LINE__,
+            return new PEAR_Error('The given memcache object was not valid in file '
+                                  . __FILE__ . ' at line ' . __LINE__,
                                   41,
                                   PEAR_ERROR_RETURN,
                                   null,
@@ -102,7 +105,8 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
     /**
      * Set some default options
      *
-     * @access  private
+     * @access private
+     * @return void
      */
     function _setDefaults()
     {
@@ -113,10 +117,11 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
     /**
      * Establish connection to a database
      *
-     * @access  public
-     * @param   string  $save_path      Save path
-     * @param   string  $session_name   Session name
-     * @return  mixed   Object on error, otherwise bool
+     * @param string $save_path    Save path
+     * @param string $session_name Session name
+     *
+     * @access public
+     * @return mixed  Object on error, otherwise bool
      */
     function open($save_path, $session_name)
     {
@@ -126,8 +131,8 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
     /**
      * Free resources
      *
-     * @access  public
-     * @return  bool
+     * @access public
+     * @return bool
      */
     function close()
     {
@@ -137,41 +142,43 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
     /**
      * Read session data
      *
-     * @access  public
-     * @param   string  $id     Session id
-     * @return  mixed
+     * @param string $id Session id
+     *
+     * @access public
+     * @return mixed
      */
     function read($id)
     {
-        $result    = $this->mc->get($this->options['prefix'] . $id);
+        $result = $this->mc->get($this->options['prefix'] . $id);
         return $result;
     }
 
     /**
      * Write session data
      *
-     * @access  public
-     * @param   string  $id     Session id
-     * @param   mixed   $data   Session data
-     * @return  bool
+     * @param string $id   Session id
+     * @param mixed  $data Session data
+     *
+     * @access public
+     * @return bool
      */
     function write($id, $data)
     {
         $this->mc->set($this->options['prefix'] . $id,
                        $data,
                        MEMCACHE_COMPRESSED,
-                       time() + ini_get('session.gc_maxlifetime')
-                      );
+                       time() + ini_get('session.gc_maxlifetime'));
 
         return true;
     }
 
-   /**
+    /**
      * Destroy session data
      *
-     * @access  public
-     * @param   string  $id     Session id
-     * @return  bool
+     * @param string $id Session id
+     *
+     * @access public
+     * @return bool
      */
     function destroy($id)
     {
@@ -182,9 +189,10 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
     /**
      * Garbage collection
      *
-     * @access  public
-     * @param   int     $maxlifetime    Maximum lifetime
-     * @return  bool
+     * @param int $maxlifetime Maximum lifetime
+     *
+     * @access public
+     * @return bool
      */
     function gc($maxlifetime)
     {
