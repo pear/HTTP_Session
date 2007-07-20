@@ -5,7 +5,7 @@
  <summary>Object-oriented interface to the session_* family functions</summary>
  <description>Object-oriented interface to the session_* family functions.
 It provides extra features such as database storage for
-session data using the DB, MDB and MDB2 package. It introduces new methods
+session data using the DB, MDB, and MDB2 package as well as the Memcache extension. It introduces new methods
 like isNew(), useCookies(), setExpire(), setIdle(),
 isExpired(), isIdled() and others.
  </description>

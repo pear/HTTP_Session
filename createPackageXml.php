@@ -17,13 +17,15 @@ $p2 =& PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->addRelease();
 $p2->generateContents();
-$p2->setReleaseVersion('0.5.5');
-$p2->setAPIVersion('0.5.5');
+$p2->setReleaseVersion('0.5.6');
+$p2->setAPIVersion('0.5.6');
 $p2->setReleaseStability('beta');
 $p2->setAPIStability('beta');
-$p2->setNotes('- fixed bug #9396: Call to a member function on a non-object (thanks to Ryan Hutchison)
-- fixed bug #9602: createPackageXml.php is installed in package dir
-- implemented request #9607: get() / set() by reference, added methods getRef() / setRef()');
+$p2->setNotes("- added container for Memcache (request #9715)
+- implemented request #11022 (Setting session ID)
+- implemented request #11025 (Replace \$_SERVER['SCRIPT_NAME'] with \$_SERVER['PHP_SELF'])
+- added unit tests (PHP5)
+- CS fixes");
 
 // get a compatible version 1.0 of package xml
 $p1 =& $p2->exportCompatiblePackageFile1();

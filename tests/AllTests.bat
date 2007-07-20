@@ -1,1 +1,0 @@
-"C:\Programme\Zend\Core For Oracle\bin\php" -d include_path=".;c:\wamp\htdocs\iop_v4\scripts\includes\tests;c:\wamp\htdocs\iop_v4\scripts\includes\PEAR" AllTests.php
