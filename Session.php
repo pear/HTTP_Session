@@ -610,8 +610,8 @@ class HTTP_Session
     /**
      * Sets session variable by reference
      *
-     * @param string $name  Name of a variable
-     * @param mixed  $value Value of a variable
+     * @param string $name   Name of a variable
+     * @param mixed  &$value Value of a variable
      *
      * @static
      * @access public
@@ -703,8 +703,9 @@ class HTTP_Session
      */
     function localName($name = null)
     {
-        $return = (isset($GLOBALS['__HTTP_Session_Localname'])) ? $GLOBALS['__HTTP_Session_Localname']
-                                                                : null;
+        $return = (isset($GLOBALS['__HTTP_Session_Localname']))
+            ? $GLOBALS['__HTTP_Session_Localname']
+            : null;
 
         if (!empty($name)) {
             $GLOBALS['__HTTP_Session_Localname'] = $name;

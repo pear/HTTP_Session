@@ -120,7 +120,7 @@ class HTTP_Session_Container_MDB extends HTTP_Session_Container
         } else if (is_object($dsn) && MDB::isError($dsn)) {
             return new MDB_Error($dsn->code, PEAR_ERROR_DIE);
         } else {
-            return new PEAR_Error("The given dsn was not valid in file " . __FILE__ 
+            return new PEAR_Error("The given dsn was not valid in file " . __FILE__
                                   . " at line " . __LINE__,
                                   41,
                                   PEAR_ERROR_RETURN,
@@ -186,10 +186,10 @@ class HTTP_Session_Container_MDB extends HTTP_Session_Container
      */
     function read($id)
     {
-        $query = sprintf("SELECT data FROM %s WHERE id = %s AND expiry >= %d",
-                         $this->options['table'],
-                         $this->db->getTextValue(md5($id)),
-                         time());
+        $query  = sprintf("SELECT data FROM %s WHERE id = %s AND expiry >= %d",
+                          $this->options['table'],
+                          $this->db->getTextValue(md5($id)),
+                          time());
         $result = $this->db->getOne($query);
         if (MDB::isError($result)) {
             new MDB_Error($result->code, PEAR_ERROR_DIE);
@@ -209,7 +209,7 @@ class HTTP_Session_Container_MDB extends HTTP_Session_Container
      */
     function write($id, $data)
     {
-        if ((false !== $this->crc) && 
+        if ((false !== $this->crc) &&
             ($this->crc === strlen($data) . crc32($data))) {
             // $_SESSION hasn't been touched, no need to update the blob column
             $query = sprintf("UPDATE %s SET expiry = %d WHERE id = %s",
@@ -218,9 +218,9 @@ class HTTP_Session_Container_MDB extends HTTP_Session_Container
                              $this->db->getTextValue(md5($id)));
         } else {
             // Check if table row already exists
-            $query = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
-                             $this->options['table'],
-                             $this->db->getTextValue(md5($id)));
+            $query  = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
+                              $this->options['table'],
+                              $this->db->getTextValue(md5($id)));
             $result = $this->db->getOne($query);
             if (MDB::isError($result)) {
                 new MDB_Error($result->code, PEAR_ERROR_DIE);
@@ -228,14 +228,14 @@ class HTTP_Session_Container_MDB extends HTTP_Session_Container
             }
             if (0 == intval($result)) {
                 // Insert new row into table
-                $query = sprintf("INSERT INTO %s (id, expiry, data) VALUES (%s, %d, %s)",
+                $query = sprintf("INSERT INTO %s (id,expiry,data) VALUES (%s,%d,%s)",
                                  $this->options['table'],
                                  $this->db->getTextValue(md5($id)),
                                  time() + ini_get('session.gc_maxlifetime'),
                                  $this->db->getTextValue($data));
             } else {
                 // Update existing row
-                $query = sprintf("UPDATE %s SET expiry = %d, data = %s WHERE id = %s",
+                $query = sprintf("UPDATE %s SET expiry = %d,data = %s WHERE id = %s",
                                  $this->options['table'],
                                  time() + ini_get('session.gc_maxlifetime'),
                                  $this->db->getTextValue($data),
@@ -260,9 +260,9 @@ class HTTP_Session_Container_MDB extends HTTP_Session_Container
      */
     function destroy($id)
     {
-        $query = sprintf("DELETE FROM %s WHERE id = %s",
-                         $this->options['table'],
-                         $this->db->getTextValue(md5($id)));
+        $query  = sprintf("DELETE FROM %s WHERE id = %s",
+                          $this->options['table'],
+                          $this->db->getTextValue(md5($id)));
         $result = $this->db->query($query);
         if (MDB::isError($result)) {
             new MDB_Error($result->code, PEAR_ERROR_DIE);
@@ -288,9 +288,9 @@ class HTTP_Session_Container_MDB extends HTTP_Session_Container
         }
 
         // Check if table row already exists
-        $query = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
-                         $targetTable,
-                         $this->db->getTextValue(md5($id)));
+        $query  = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
+                          $targetTable,
+                          $this->db->getTextValue(md5($id)));
         $result = $this->db->getOne($query);
         if (MDB::isError($result)) {
             new MDB_Error($result->code, PEAR_ERROR_DIE);
@@ -305,7 +305,8 @@ class HTTP_Session_Container_MDB extends HTTP_Session_Container
                              $this->db->getTextValue(md5($id)));
         } else {
             // Update existing row
-            $query = sprintf("UPDATE %s dst, %s src SET dst.expiry = src.expiry, dst.data = src.data WHERE dst.id = src.id AND src.id = %s",
+            $query = sprintf("UPDATE %s dst, %s src SET dst.expiry = src.expiry, " .
+                             "dst.data=src.data WHERE dst.id=src.id AND src.id=%s",
                              $targetTable,
                              $this->options['table'],
                              $this->db->getTextValue(md5($id)));
@@ -329,9 +330,9 @@ class HTTP_Session_Container_MDB extends HTTP_Session_Container
      */
     function gc($maxlifetime)
     {
-        $query = sprintf("DELETE FROM %s WHERE expiry < %d",
-                         $this->options['table'],
-                         time());
+        $query  = sprintf("DELETE FROM %s WHERE expiry < %d",
+                          $this->options['table'],
+                          time());
         $result = $this->db->query($query);
         if (MDB::isError($result)) {
             new MDB_Error($result->code, PEAR_ERROR_DIE);

@@ -185,10 +185,10 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
      */
     function read($id)
     {
-        $query = sprintf("SELECT data FROM %s WHERE id = %s AND expiry >= %d",
-                         $this->options['table'],
-                         $this->db->quoteSmart(md5($id)),
-                         time());
+        $query  = sprintf("SELECT data FROM %s WHERE id = %s AND expiry >= %d",
+                          $this->options['table'],
+                          $this->db->quoteSmart(md5($id)),
+                          time());
         $result = $this->db->getOne($query);
         if (DB::isError($result)) {
             new DB_Error($result->code, PEAR_ERROR_DIE);
@@ -217,9 +217,9 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
                              $this->db->quoteSmart(md5($id)));
         } else {
             // Check if table row already exists
-            $query = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
-                             $this->options['table'],
-                             $this->db->quoteSmart(md5($id)));
+            $query  = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
+                              $this->options['table'],
+                              $this->db->quoteSmart(md5($id)));
             $result = $this->db->getOne($query);
             if (DB::isError($result)) {
                 new DB_Error($result->code, PEAR_ERROR_DIE);
@@ -227,14 +227,14 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
             }
             if (0 == intval($result)) {
                 // Insert new row into table
-                $query = sprintf("INSERT INTO %s (id, expiry, data) VALUES (%s, %d, %s)",
+                $query = sprintf("INSERT INTO %s (id,expiry,data) VALUES (%s,%d,%s)",
                                  $this->options['table'],
                                  $this->db->quoteSmart(md5($id)),
                                  time() + ini_get('session.gc_maxlifetime'),
                                  $this->db->quoteSmart($data));
             } else {
                 // Update existing row
-                $query = sprintf("UPDATE %s SET expiry = %d, data = %s WHERE id = %s",
+                $query = sprintf("UPDATE %s SET expiry = %d,data = %s WHERE id = %s",
                                  $this->options['table'],
                                  time() + ini_get('session.gc_maxlifetime'),
                                  $this->db->quoteSmart($data),
@@ -259,9 +259,9 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
      */
     function destroy($id)
     {
-        $query = sprintf("DELETE FROM %s WHERE id = %s",
-                         $this->options['table'],
-                         $this->db->quoteSmart(md5($id)));
+        $query  = sprintf("DELETE FROM %s WHERE id = %s",
+                          $this->options['table'],
+                          $this->db->quoteSmart(md5($id)));
         $result = $this->db->query($query);
         if (DB::isError($result)) {
             new DB_Error($result->code, PEAR_ERROR_DIE);
@@ -287,9 +287,9 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
         }
 
         // Check if table row already exists
-        $query = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
-                         $targetTable,
-                         $this->db->quoteSmart(md5($id)));
+        $query  = sprintf("SELECT COUNT(id) FROM %s WHERE id = %s",
+                          $targetTable,
+                          $this->db->quoteSmart(md5($id)));
         $result = $this->db->getOne($query);
         if (DB::isError($result)) {
             new DB_Error($result->code, PEAR_ERROR_DIE);
@@ -305,7 +305,8 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
 
         } else {
             // Update existing row
-            $query = sprintf("UPDATE %s dst, %s src SET dst.expiry = src.expiry, dst.data = src.data WHERE dst.id = src.id AND src.id = %s",
+            $query = sprintf("UPDATE %s dst, %s src SET dst.expiry = src.expiry, " .
+                             "dst.data=src.data WHERE dst.id=src.id AND src.id=%s",
                              $targetTable,
                              $this->options['table'],
                              $this->db->quoteSmart(md5($id)));
@@ -329,9 +330,9 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
      */
     function gc($maxlifetime)
     {
-        $query = sprintf("DELETE FROM %s WHERE expiry < %d",
-                         $this->options['table'],
-                         time());
+        $query  = sprintf("DELETE FROM %s WHERE expiry < %d",
+                          $this->options['table'],
+                          time());
         $result = $this->db->query($query);
         if (DB::isError($result)) {
             new DB_Error($result->code, PEAR_ERROR_DIE);

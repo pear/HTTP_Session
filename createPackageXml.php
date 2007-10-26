@@ -1,4 +1,27 @@
 <?php
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+ * Script to create package2.xml
+ *
+ * PHP version 4
+ *
+ * LICENSE: This source file is subject to version 3.0 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category  HTTP
+ * @package   HTTP_Session
+ * @author    Torsten Roehr <torsten.roehr@gmx.de>
+ * @copyright 1997-2005 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/HTTP_Session
+ */
+
 set_include_path('c:/wwwroot/pear');
 require_once 'PEAR/PackageFileManager2.php';
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
@@ -36,7 +59,7 @@ if (isset($_GET['make']) || (isset($_SERVER['argv'][1]) &&
     $p1->writePackageFile();
     $e = $p2->writePackageFile();
 
-  // output on screen
+    // output on screen
 } else {
     $p1->debugPackageFile();
     $e = $p2->debugPackageFile();
