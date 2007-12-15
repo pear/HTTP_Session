@@ -50,9 +50,9 @@ define("HTTP_SESSION_CONTINUED", 2);
  *
  * <code>
  * // Setting some options and detecting of a new session
- * HTTP_Session::setCookieless(false);
+ * HTTP_Session::useCookies(true);
  * HTTP_Session::start('MySessionID');
- * HTTP_Session::set('variable', 'Tet string');
+ * HTTP_Session::set('variable', 'Test string');
  * if (HTTP_Session::isNew()) {
  *     echo('new session was created with the current request');
  *     $visitors++; // Increase visitors count
