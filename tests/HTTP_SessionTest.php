@@ -154,6 +154,12 @@ class HTTP_SessionTest extends PHPUnit_Framework_TestCase
      */
     public function testStart()
     {
+        $file = "";
+        $line = "";
+        if (headers_sent($file, $line)) {
+            $this->markTestSkipped("Can't execute test case, headers already sent in " . $file . ":" . $line);
+        }
+
         HTTP_Session::start('mySessionName', 'mySessionId');
         $this->assertEquals('mySessionName', HTTP_Session::name());
         $this->assertEquals('mySessionId', HTTP_Session::id());
@@ -167,6 +173,12 @@ class HTTP_SessionTest extends PHPUnit_Framework_TestCase
      */
     public function testRegenerateId()
     {
+        $file = "";
+        $line = "";
+        if (headers_sent($file, $line)) {
+            $this->markTestSkipped("Can't execute test case, headers already sent in " . $file . ":" . $line);
+        }
+
         $oldId = HTTP_Session::id();
         HTTP_Session::regenerateId();
         $newId = HTTP_Session::id();
