@@ -1,132 +1,175 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0" packagerversion="1.5.0a1">
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.5.0a1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
  <name>HTTP_Session</name>
+ <channel>pear.php.net</channel>
  <summary>Object-oriented interface to the session_* family functions</summary>
  <description>Object-oriented interface to the session_* family functions.
 It provides extra features such as database storage for
 session data using the DB, MDB, and MDB2 package as well as the Memcache extension. It introduces new methods
 like isNew(), useCookies(), setExpire(), setIdle(),
-isExpired(), isIdled() and others.
- </description>
- <maintainers>
-  <maintainer>
-   <user>lexxx</user>
-   <name>Alexander Radivanovich</name>
-   <email>info@wwwlab.net</email>
-   <role>lead</role>
-  </maintainer>
-  <maintainer>
-   <user>gurugeek</user>
-   <name>David Costa</name>
-   <email>gurugeek@php.net</email>
-   <role>lead</role>
-  </maintainer>
-  <maintainer>
-   <user>neufeind</user>
-   <name>Stefan Neufeind</name>
-   <email>pear.neufeind@speedpartner.de</email>
-   <role>lead</role>
-  </maintainer>
-  <maintainer>
-   <user>metz</user>
-   <name>Michael Metz</name>
-   <email>pear.metz@speedpartner.de</email>
-   <role>lead</role>
-  </maintainer>
-  <maintainer>
-   <user>troehr</user>
-   <name>Torsten Roehr</name>
-   <email>troehr@php.net</email>
-   <role>lead</role>
-  </maintainer>
-  <maintainer>
-   <user>negora</user>
-   <name>Radu Negoescu</name>
-   <email>php@dawnidas.com</email>
-   <role>developer</role>
-  </maintainer>
-  <maintainer>
-   <user>tbibbs</user>
-   <name>Tony Bibbs</name>
-   <email>tony@geeklog.net</email>
-   <role>developer</role>
-  </maintainer>
-  </maintainers>
- <release>
-  <version>0.5.5</version>
-  <date>2006-12-16</date>
-  <license>PHP Licence</license>
-  <state>beta</state>
-  <notes>- fixed bug #9396: Call to a member function on a non-object (thanks to Ryan Hutchison)
+isExpired(), isIdled() and others.</description>
+ <lead>
+  <name>Alexander Radivanovich</name>
+  <user>lexxx</user>
+  <email>info@wwwlab.net</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>David Costa</name>
+  <user>gurugeek</user>
+  <email>gurugeek@php.net</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Stefan Neufeind</name>
+  <user>neufeind</user>
+  <email>pear.neufeind@speedpartner.de</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Michael Metz</name>
+  <user>metz</user>
+  <email>pear.metz@speedpartner.de</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Torsten Roehr</name>
+  <user>troehr</user>
+  <email>troehr@php.net</email>
+  <active>yes</active>
+ </lead>
+ <developer>
+  <name>Radu Negoescu</name>
+  <user>negora</user>
+  <email>php@dawnidas.com</email>
+  <active>yes</active>
+ </developer>
+ <developer>
+  <name>Tony Bibbs</name>
+  <user>tbibbs</user>
+  <email>tony@geeklog.net</email>
+  <active>yes</active>
+ </developer>
+ <date>2006-12-16</date>
+ <time>14:26:28</time>
+ <version>
+  <release>0.5.5</release>
+  <api>0.5.5</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.php.net/license">PHP Licence</license>
+ <notes>- fixed bug #9396: Call to a member function on a non-object (thanks to Ryan Hutchison)
 - fixed bug #9602: createPackageXml.php is installed in package dir
-- implemented request #9607: get() / set() by reference, added methods getRef() / setRef()
-  </notes>
-  <deps>
-   <dep type="php" rel="ge" version="4.2.0" optional="no"/>
-   <dep type="pkg" rel="ge" version="1.7.6" optional="yes">DB</dep>
-   <dep type="pkg" rel="ge" version="1.1.4" optional="yes">MDB</dep>
-   <dep type="pkg" rel="ge" version="2.0.1" optional="yes">MDB2</dep>
-  </deps>
-  <filelist>
-   <dir name="/" baseinstalldir="HTTP">
-    <dir name="docs">
-     <file role="doc" name="Container_Example.php"/>
-     <file role="doc" name="HTTP_Session_Example.php"/>
-     <file role="doc" name="sessiondata.sql"/>
-    </dir> <!-- /docs -->
-    <dir name="Session">
-     <dir name="Container">
-      <file role="php" name="DB.php"/>
-      <file role="php" name="MDB.php"/>
-      <file role="php" name="MDB2.php"/>
-     </dir> <!-- /Session/Container -->
-     <file role="php" name="Container.php"/>
-    </dir> <!-- /Session -->
-    <file role="php" name="Session.php"/>
-   </dir> <!-- / -->
-  </filelist>
- </release>
+- implemented request #9607: get() / set() by reference, added methods getRef() / setRef()</notes>
+ <contents>
+  <dir baseinstalldir="/" name="/">
+   <dir name="docs">
+    <file name="Container_Example.php" role="doc" />
+    <file name="HTTP_Session_Example.php" role="doc" />
+    <file name="sessiondata.sql" role="doc" />
+   </dir> <!-- /docs -->
+   <dir name="Session">
+    <dir name="Container">
+     <file name="DB.php" role="php" />
+     <file name="MDB.php" role="php" />
+     <file name="MDB2.php" role="php" />
+    </dir> <!-- /Session/Container -->
+    <file name="Container.php" role="php" />
+   </dir> <!-- /Session -->
+   <file name="Session.php" role="php" />
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.2.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
+  <optional>
+   <package>
+    <name>DB</name>
+    <channel>pear.php.net</channel>
+    <min>1.7.6</min>
+   </package>
+   <package>
+    <name>MDB</name>
+    <channel>pear.php.net</channel>
+    <min>1.1.4</min>
+   </package>
+   <package>
+    <name>MDB2</name>
+    <channel>pear.php.net</channel>
+    <min>2.0.1</min>
+   </package>
+  </optional>
+ </dependencies>
+ <phprelease />
  <changelog>
-   <release>
-    <version>0.5.5</version>
-    <date>2006-12-16</date>
-    <license>PHP Licence</license>
-    <state>beta</state>
-    <notes>- fixed bug #9396: Call to a member function on a non-object (thanks to Ryan Hutchison)
+  <release>
+   <version>
+    <release>0.5.5</release>
+    <api>0.5.5</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2006-12-16</date>
+   <license uri="http://www.php.net/license">PHP Licence</license>
+   <notes>- fixed bug #9396: Call to a member function on a non-object (thanks to Ryan Hutchison)
 - fixed bug #9602: createPackageXml.php is installed in package dir
-- implemented request #9607: get() / set() by reference, added methods getRef() / setRef()
-    </notes>
-   </release>
-   <release>
-    <version>0.5.4</version>
-    <date>2006-11-11</date>
-    <license>PHP Licence</license>
-    <state>beta</state>
-    <notes>- fixed bug #8815: Notices with error_reporting(E_ALL)
+- implemented request #9607: get() / set() by reference, added methods getRef() / setRef()</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.4</release>
+    <api>0.5.4</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2006-11-11</date>
+   <license uri="http://www.php.net/license">PHP Licence</license>
+   <notes>- fixed bug #8815: Notices with error_reporting(E_ALL)
 - implemented request #8911: Add the possibilty to change the session id after destroy of old one
 - implemented request #9261: Add destructor to allow usage in PHP &gt; 5.0.5
-- added End-user Documentation
-    </notes>
-   </release>
-   <release>
-    <version>0.5.3</version>
-    <date>2006-09-17</date>
-    <license>PHP Licence</license>
-    <state>beta</state>
-    <notes>- implemented request #8717: HTTP_Session::replicate()
-    </notes>
-   </release>
-   <release>
-    <version>0.5.2</version>
-    <date>2006-05-11</date>
-    <license>PHP Licence</license>
-    <state>beta</state>
-    <notes>- fixed bug #6778 DB container problem
+- added End-user Documentation</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.3</release>
+    <api>0.5.3</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2006-09-17</date>
+   <license uri="http://www.php.net/license">PHP Licence</license>
+   <notes>- implemented request #8717: HTTP_Session::replicate()</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.2</release>
+    <api>0.5.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2006-05-11</date>
+   <license uri="http://www.php.net/license">PHP Licence</license>
+   <notes>- fixed bug #6778 DB container problem
 - fixed bug #7543 bug in sessionValidThru()
 - replaced @ with isset() in set() and localName()
-- increased optional dependency for MDB2 to 2.0.1
-    </notes>
-   </release>
+- increased optional dependency for MDB2 to 2.0.1</notes>
+  </release>
  </changelog>
 </package>
