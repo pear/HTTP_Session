@@ -228,6 +228,9 @@ class HTTP_SessionTest extends PHPUnit_Framework_TestCase
     {
         HTTP_Session::updateIdle();
 
+        $this->assertTrue(isset($_SESSION['__HTTP_Session_Idle_TS']));
+        $this->assertTrue(isset($_SESSION['__HTTP_Session_Idle']));
+
         $this->assertEquals($_SESSION['__HTTP_Session_Idle_TS'] +
                             $_SESSION['__HTTP_Session_Idle'],
                             HTTP_Session::sessionValidThru());
